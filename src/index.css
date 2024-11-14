@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Montserrat:ital,wght@0,700;1,700&family=Tilt+Warp&display=swap");
+
+:root {
+  --main: #71f0bb;
+  --submain: #19632f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Lexend", sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: whitesmoke;
+}
+
+.centered {
+  margin: 3rem auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  font-family: "Lexend", sans-serif;
+  font-size: 18px;
+}
+
+.hidenavbar {
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+a {
+  text-decoration: none;
+  color: var(--submain);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+a:hover,
+a:active {
+  color: var(--main);
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.authlink {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

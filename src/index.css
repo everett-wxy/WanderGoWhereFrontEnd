@@ -5,6 +5,7 @@
   --main: #71f0bb;
   --submain: #19632f;
   --placeholder: rgb(189, 189, 189);
+  --lightgray: rgba(197, 197, 197, 0.2);
 }
 
 * {

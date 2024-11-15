@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Montserrat:ital,wght@0,700;1,700&family=Tilt+Warp&display=swap");
+
+:root {
+  --main: #71f0bb;
+  --submain: #19632f;
+  --placeholder: rgb(189, 189, 189);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: "Lexend", sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: rgb(255, 255, 255);
+}
+
+li {
+  list-style-type: none;
+}
+
+.centered {
+  margin: 3rem auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  font-family: "Lexend", sans-serif;
+  font-size: 16px;
+  position: fixed;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.hidenavbar {
+  position: fixed;
+  top: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--submain);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+a:hover,
+a:active {
+  color: var(--main);
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.authlink {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+button {
+  width: 100%;
+  height: 25%;
+  background-color: var(--main);
+  color: white;
+  border-radius: 20px;
+  border-style: none;
+  transition: background-color 0.5s ease;
+}
+
+button:hover {
+  background-color: orangered;
+}

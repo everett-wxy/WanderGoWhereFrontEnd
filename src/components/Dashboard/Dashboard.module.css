@@ -1,0 +1,157 @@
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.dashboard {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tripcarddisplay {
+  width: 60%;
+  min-height: 30%;
+  margin-top: 8%;
+}
+
+.tripcardcomponent {
+  background-color: var(--main);
+  color: white;
+}
+
+.tripcard {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  border: 1px solid var(--main);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+  position: relative;
+  margin-bottom: 30px;
+  z-index: 1;
+}
+
+.tripcardbudget {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  justify-self: right;
+  padding: 0 50px 30px 0;
+}
+
+.tripcardbudget > :first-child {
+  background-color: var(--main);
+  color: white;
+  border-radius: 20px 20px 0 0;
+}
+
+.tripcardbudget > :nth-child(2) {
+  background-color: white;
+  color: var(--placeholder);
+  border-radius: 0 0 20px 20px;
+  border: 5px solid var(--main);
+}
+
+.tripcarddate {
+  min-width: auto;
+  border: 0.5px solid var(--placeholder);
+  border-radius: 20px;
+  position: absolute;
+  right: 0;
+  margin-right: 50px;
+  padding: 5px 20px 0 20px;
+}
+
+.tripcarddate > :first-child {
+  text-align: center;
+}
+
+.tripcarddate > :nth-child(2) {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  text-align: center;
+  color: var(--placeholder);
+}
+
+.destinationimg {
+  position: absolute;
+  margin: 5px 0 0px 50px;
+  bottom: 40px;
+  width: 32%;
+  height: auto;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: 20px;
+  object-fit: cover;
+  border: 5px solid var(--main);
+}
+
+.checklist {
+  width: 100%;
+  justify-self: right;
+  padding: 0 50px 40px 0;
+  overflow: hidden;
+}
+
+.listandbudget {
+  display: grid;
+  margin-top: 15%;
+  width: 100%;
+  height: auto;
+  grid-template-columns: 0.5fr 1fr 0.9fr 1fr;
+  justify-self: right;
+  overflow: hidden;
+}
+
+.tripcardwrapper {
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  position: relative;
+  z-index: 4;
+  border-radius: 40px;
+  margin-bottom: 30px;
+}
+
+.hoverbuttons {
+  width: 100%;
+  height: inherit;
+  position: absolute;
+  z-index: 2;
+  background-color: rgba(12, 95, 54, 0.309);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 40px;
+  height: calc(100% - 28px);
+  transition: fade-in 0.5s ease;
+}
+
+.hoverbuttons button {
+  width: 20%;
+  height: 15%;
+  background-color: var(--main);
+  color: white;
+  border-radius: 20px;
+  border-style: none;
+  transition: background-color 0.5s ease;
+}
+
+.hoverbuttons button:hover {
+  background-color: orangered;
+}
+
+.notripcard {
+  width: 10%;
+  height: 30vh;
+  margin-top: 5%;
+}

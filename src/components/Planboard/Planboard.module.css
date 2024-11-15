@@ -1,0 +1,84 @@
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.planboard {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.planboarddisplay {
+  width: 60%;
+  min-height: 100vw;
+  margin-top: 8%;
+}
+
+.flightcontainer {
+  background-color: white;
+  width: 100%;
+  min-height: 20%;
+  border-radius: 40px;
+  border: 1px solid var(--main);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+  position: relative;
+  margin-bottom: 30px;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: 15% 85%;
+}
+
+.flightctnrcomponent {
+  background-color: var(--main);
+  color: white;
+  height: 100%;
+}
+
+.flightcardbox {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  padding: 10px;
+  height: inherit;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.flightcard {
+  background-color: var(--lightgray);
+  flex: 0 0 300px;
+  height: auto;
+  border-radius: 30px;
+  padding-top: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.flightlocationanddate {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  font-size: 14px;
+  text-align: center;
+}
+
+.flightlocationanddate p {
+  color: gray;
+}
+
+.flightcard > p {
+  font-size: 14px;
+}
+
+.cardgrid {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}

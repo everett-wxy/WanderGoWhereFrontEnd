@@ -1,25 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const [isScrolling, setIsScrolling] = useState(false);
-  const [scrollTimeout, setScrollTimeout] = useState("");
+  const scrollTimeout = useRef(null);
 
   const toggleHideNavBar = () => {
     setIsScrolling(true);
-    clearTimeout(scrollTimeout);
-    setScrollTimeout(
-      setTimeout(() => {
-        setIsScrolling(false);
-      })
-    );
+
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+
+    scrollTimeout.current = setTimeout(() => {
+      setIsScrolling(false);
+    }, 500);
   };
 
   useEffect(() => {
     window.addEventListener("scroll", toggleHideNavBar);
+
     return () => {
       window.removeEventListener("scroll", toggleHideNavBar);
-      clearTimeout(scrollTimeout);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
     };
   }, []);
 
@@ -36,6 +41,7 @@ const NavBar = () => {
         <div className="col-md-3 authlink">
           <Link>Login</Link> <Link>Sign up</Link>{" "}
         </div>
+        {/* if user is logged in - condition <Link>Add Trip</Link> Logout. */}
       </div>
     </div>
   );

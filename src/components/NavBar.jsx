@@ -44,16 +44,16 @@ const NavBar = (props) => {
         <div className="col-md-3"></div>
         {accessToken.length === 0 && (
           <div className="col-md-3 authlink">
-            <Link onClick={props.loginFn}>Login</Link>{" "}
             <Link onClick={props.signupFn}>Sign up</Link>{" "}
+            <Link onClick={props.loginFn}>Login</Link>{" "}
           </div>
         )}
         {accessToken.length > 0 && (
           <div className="col-md-3 authlink">
+            <Link to="/planboard">Add Trip</Link>
             <Link to="/" onClick={() => setAccessToken("")}>
               Logout
             </Link>
-            <Link to="/planboard">Add Trip</Link>
           </div>
         )}
       </div>

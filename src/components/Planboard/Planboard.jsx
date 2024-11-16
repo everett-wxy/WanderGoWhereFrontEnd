@@ -5,6 +5,7 @@ import styles from "./Planboard.module.css";
 const Planboard = () => {
   return (
     <div className={styles.planboard}>
+      <div style={{ marginTop: "200px" }}></div>
       <PlanboardDisplay />
     </div>
   );

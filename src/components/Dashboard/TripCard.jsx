@@ -65,7 +65,7 @@ const TripCard = (props) => {
           <div></div>
           <ul className={styles.checklist}>
             <li>
-              {props.flighttix ? (
+              {props.flighttix.length > 0 ? (
                 <span>
                   <span style={{ color: "var(--main)", paddingRight: "10px" }}>
                     &#9745;
@@ -125,7 +125,7 @@ const TripCard = (props) => {
                 <span>
                   <span style={{ color: "var(--placeholder)" }}>
                     <span style={{ paddingRight: "10px" }}>&#9744;</span>No food
-                    planned"
+                    planned
                   </span>
                 </span>
               )}
@@ -136,7 +136,7 @@ const TripCard = (props) => {
               <h3>Budget</h3>
             </div>
             <div>
-              <h2>{props.budget}</h2>
+              <h2>S${props.budget}</h2>
             </div>
           </div>
         </div>

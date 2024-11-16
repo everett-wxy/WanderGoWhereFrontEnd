@@ -114,6 +114,7 @@ const OverLay = (props) => {
       pwValidation === "valid"
     ) {
       signUp(userInput);
+      props.setShowSignupModal(false);
     } else alert("Ensure all fields are filled with valid values.");
   };
 

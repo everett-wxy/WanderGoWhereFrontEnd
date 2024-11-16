@@ -12,10 +12,13 @@ function App() {
   const [showSigninModal, setShowSigninModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [accessToken, setAccessToken] = useState("");
+  const [username, setUsername] = useState("");
 
   return (
     <>
-      <UserContext.Provider value={{ accessToken, setAccessToken }}>
+      <UserContext.Provider
+        value={{ accessToken, setAccessToken, username, setUsername }}
+      >
         <BrowserRouter>
           {showSigninModal && (
             <SignInModal setShowSigninModal={setShowSigninModal} />

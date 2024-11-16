@@ -4,9 +4,9 @@ import UserContext from "../components/context/user";
 import { useNavigate } from "react-router-dom";
 
 const NavBar = (props) => {
-  const navigate = useNavigate();
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [showDashboardLink, setShowDashboardLink] = useState(false);
   const scrollTimeout = useRef(null);
 
   const toggleHideNavBar = () => {
@@ -19,6 +19,11 @@ const NavBar = (props) => {
     scrollTimeout.current = setTimeout(() => {
       setIsScrolling(false);
     }, 500);
+  };
+
+  const handleLogout = () => {
+    setAccessToken("");
+    setUsername("");
   };
 
   useEffect(() => {
@@ -50,8 +55,16 @@ const NavBar = (props) => {
         )}
         {accessToken.length > 0 && (
           <div className="col-md-3 authlink">
-            <Link to="/planboard">Add Trip</Link>
-            <Link to="/" onClick={() => setAccessToken("")}>
+            {!showDashboardLink ? (
+              <Link to="/planboard" onClick={() => setShowDashboardLink(true)}>
+                Add Trip
+              </Link>
+            ) : (
+              <Link to="/dashboard" onClick={() => setShowDashboardLink(false)}>
+                Dashboard
+              </Link>
+            )}
+            <Link to="/" onClick={handleLogout}>
               Logout
             </Link>
           </div>

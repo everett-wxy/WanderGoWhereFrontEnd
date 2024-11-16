@@ -27,6 +27,7 @@ const OverLay = (props) => {
       if (res.ok) {
         userCtx.setAccessToken(data.access);
         const decoded = jwtDecode(data.access);
+        userCtx.setUsername(decoded.username);
         console.log("Sign in successful");
         props.setShowSigninModal(false);
         navigate("/dashboard");

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Planboard.module.css";
+import styles from "./Accomboard.module.css";
 
 const AccomCard = () => {
   return (

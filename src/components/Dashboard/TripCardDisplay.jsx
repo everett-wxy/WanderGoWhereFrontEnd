@@ -3,8 +3,10 @@ import TripCard from "./TripCard";
 import styles from "./Dashboard.module.css";
 import { useContext } from "react";
 import UserContext from "../context/user";
+import { useNavigate } from "react-router-dom";
 
-const TripCardDisplay = () => {
+const TripCardDisplay = (props) => {
+  const navigate = useNavigate();
   const [activity, setActivity] = useState([]);
   const [food, setFood] = useState([]);
   const { accessToken } = useContext(UserContext);
@@ -33,16 +35,44 @@ const TripCardDisplay = () => {
     }
   };
 
+  const deleteUserTrip = async (tripId) => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/trips",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + accessToken,
+          },
+          body: JSON.stringify({
+            id: tripId,
+          }),
+        }
+      );
+      if (!res.ok) {
+        throw new Error("data error");
+      } else {
+        const data = await res.json();
+        getUserTrip();
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   useEffect(() => {
     getUserTrip();
   }, []);
 
   return tripsData.length > 0 ? (
     <div className={styles.tripcarddisplay}>
-      {tripsData.map((trip) => {
+      {tripsData.map((trip, idx) => {
         return (
           <TripCard
-            tripidx={trip.name}
+            key={trip._id}
+            tripidx={idx}
+            tripname={trip.name}
             destination={trip.city}
             flighttix={trip.flights}
             accom="nah"
@@ -53,6 +83,13 @@ const TripCardDisplay = () => {
             returningdate="yes"
             returningtime="yes"
             budget={trip.budget}
+            handleContinue={() => {
+              navigate("/planboard");
+            }}
+            handleDelete={() => {
+              props.setShowDelCfmModal(true);
+              props.setHandleGoFunction(() => () => deleteUserTrip(trip._id));
+            }}
           />
         );
       })}

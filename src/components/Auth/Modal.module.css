@@ -67,3 +67,42 @@ input::placeholder {
   top: 20px;
   right: 45px;
 }
+
+.popupmodal {
+  position: fixed;
+  background: linear-gradient(180deg, white, rgb(227, 227, 227), white);
+  top: 35vh;
+  bottom: 40vh;
+  left: 30%;
+  width: 40%;
+  height: 30vh;
+  z-index: 999;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 40px;
+  border: 10px solid var(--main);
+}
+
+.btndiv {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.msgdiv {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  align-items: center;
+}
+
+.popupbtn {
+  height: 60%;
+}

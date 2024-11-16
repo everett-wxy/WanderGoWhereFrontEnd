@@ -25,6 +25,7 @@ const OverLay = (props) => {
       const data = await res.json();
 
       if (res.ok) {
+        localStorage.setItem("accessToken", data.access);
         userCtx.setAccessToken(data.access);
         const decoded = jwtDecode(data.access);
         userCtx.setUsername(decoded.username);

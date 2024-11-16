@@ -13,8 +13,8 @@ const TripCard = (props) => {
     >
       {showButtons ? (
         <div className={styles.hoverbuttons}>
-          <button>Continue Planning</button>
-          <button>Delete</button>
+          <button onClick={props.handleContinue}>Continue Planning</button>
+          <button onClick={props.handleDelete}>Delete</button>
         </div>
       ) : (
         <div></div>
@@ -28,7 +28,10 @@ const TripCard = (props) => {
             padding: "10px 0 0 50px",
           }}
         >
-          <h6>{props.tripidx}</h6>
+          <h6>
+            <span style={{ fontWeight: 200 }}>Trip {props.tripidx + 1}: </span>
+            {props.tripname}
+          </h6>
         </div>
         <div
           style={{

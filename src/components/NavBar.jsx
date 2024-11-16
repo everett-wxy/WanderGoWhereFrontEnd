@@ -1,7 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
+import UserContext from "../components/context/user";
+import { useNavigate } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = (props) => {
+  const navigate = useNavigate();
+  const { accessToken, setAccessToken } = useContext(UserContext);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef(null);
 
@@ -38,10 +42,20 @@ const NavBar = () => {
           </Link>{" "}
         </div>
         <div className="col-md-3"></div>
-        <div className="col-md-3 authlink">
-          <Link>Login</Link> <Link>Sign up</Link>{" "}
-        </div>
-        {/* if user is logged in - condition <Link>Add Trip</Link> Logout. */}
+        {accessToken.length === 0 && (
+          <div className="col-md-3 authlink">
+            <Link onClick={props.loginFn}>Login</Link>{" "}
+            <Link onClick={props.signupFn}>Sign up</Link>{" "}
+          </div>
+        )}
+        {accessToken.length > 0 && (
+          <div className="col-md-3 authlink">
+            <Link to="/" onClick={() => setAccessToken("")}>
+              Logout
+            </Link>
+            <Link to="/planboard">Add Trip</Link>
+          </div>
+        )}
       </div>
     </div>
   );

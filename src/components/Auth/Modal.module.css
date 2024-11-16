@@ -1,0 +1,69 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 990;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.modal {
+  position: fixed;
+  background: white;
+  top: 20vh;
+  bottom: 40vh;
+  left: 37%;
+  width: 26%;
+  height: 70vh;
+  z-index: 999;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 40px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 40px;
+}
+
+.btn {
+  width: 50%;
+  height: 12%;
+  margin-top: 5px;
+}
+
+input {
+  border: 1px solid var(--main);
+  width: 100%;
+  border-radius: 20px;
+  padding: 20px;
+  font-size: 20px;
+  height: 13%;
+}
+
+input::placeholder {
+  color: var(--placeholder);
+}
+
+.msg {
+  width: 80%;
+  margin-bottom: 15px;
+}
+
+.validation {
+  height: 20px;
+  width: 100%;
+  padding-left: 10px;
+  margin-top: -8px;
+}
+
+.validation p {
+  font-size: 12px;
+}
+
+.cancel {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+}

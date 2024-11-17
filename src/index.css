@@ -95,3 +95,46 @@ button {
 button:hover {
   background-color: orangered;
 }
+
+.slick-slider {
+  height: auto;
+  overflow: visible;
+}
+
+.slick-slide {
+  opacity: 0.6;
+  margin: 0 12px;
+  filter: blur(2px);
+}
+
+.slick-center {
+  transform: scale(1.5);
+  opacity: 1;
+  z-index: 10;
+  transition: transform 0.3s ease-in-out;
+  filter: none;
+}
+
+.slick-list {
+  overflow: hidden;
+  width: auto;
+}
+
+.slick-track {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  padding: 100px 0;
+  overflow: visible;
+  position: relative;
+}
+
+.slick-center img {
+  border-radius: 100px;
+  transition: border-radius 0.3s ease-in-out, transform 0.3s ease;
+}
+
+.slick-center img:hover {
+  border-radius: 0;
+}

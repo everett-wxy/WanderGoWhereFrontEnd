@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../components/context/user";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const NavBar = (props) => {
-  const navigate = useNavigate();
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef(null);
+  const location = useLocation();
+
+  const isDashboard = location.pathname === "/dashboard";
 
   const toggleHideNavBar = () => {
     setIsScrolling(true);
@@ -19,6 +21,12 @@ const NavBar = (props) => {
     scrollTimeout.current = setTimeout(() => {
       setIsScrolling(false);
     }, 500);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setAccessToken("");
+    setUsername("");
   };
 
   useEffect(() => {
@@ -50,8 +58,12 @@ const NavBar = (props) => {
         )}
         {accessToken.length > 0 && (
           <div className="col-md-3 authlink">
-            <Link to="/planboard">Add Trip</Link>
-            <Link to="/" onClick={() => setAccessToken("")}>
+            {isDashboard ? (
+              <Link to="/planboard">Add Trip</Link>
+            ) : (
+              <Link to="/dashboard">Dashboard</Link>
+            )}
+            <Link to="/" onClick={handleLogout}>
               Logout
             </Link>
           </div>

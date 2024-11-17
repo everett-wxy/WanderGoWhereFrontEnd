@@ -13,8 +13,8 @@ const TripCard = (props) => {
     >
       {showButtons ? (
         <div className={styles.hoverbuttons}>
-          <button>Continue Planning</button>
-          <button>Delete</button>
+          <button onClick={props.handleContinue}>Continue Planning</button>
+          <button onClick={props.handleDelete}>Delete</button>
         </div>
       ) : (
         <div></div>
@@ -28,7 +28,10 @@ const TripCard = (props) => {
             padding: "10px 0 0 50px",
           }}
         >
-          <h6>{props.tripidx}</h6>
+          <h6>
+            <span style={{ fontWeight: 200 }}>Trip {props.tripidx + 1}: </span>
+            {props.tripname}
+          </h6>
         </div>
         <div
           style={{
@@ -65,7 +68,7 @@ const TripCard = (props) => {
           <div></div>
           <ul className={styles.checklist}>
             <li>
-              {props.flighttix ? (
+              {props.flighttix.length > 0 ? (
                 <span>
                   <span style={{ color: "var(--main)", paddingRight: "10px" }}>
                     &#9745;
@@ -125,7 +128,7 @@ const TripCard = (props) => {
                 <span>
                   <span style={{ color: "var(--placeholder)" }}>
                     <span style={{ paddingRight: "10px" }}>&#9744;</span>No food
-                    planned"
+                    planned
                   </span>
                 </span>
               )}
@@ -136,7 +139,7 @@ const TripCard = (props) => {
               <h3>Budget</h3>
             </div>
             <div>
-              <h2>{props.budget}</h2>
+              <h2>S${props.budget}</h2>
             </div>
           </div>
         </div>

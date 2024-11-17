@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "./components/NavBar";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 import LandingPage from "./components/LandingPage/LandingPage";
@@ -12,10 +12,22 @@ function App() {
   const [showSigninModal, setShowSigninModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [accessToken, setAccessToken] = useState("");
+  const [username, setUsername] = useState("");
+
+  const onAppLoads = () => {
+    const token = localStorage.getItem("accessToken") || "";
+    setAccessToken(token);
+  };
+
+  useEffect(() => {
+    onAppLoads();
+  }, []);
 
   return (
     <>
-      <UserContext.Provider value={{ accessToken, setAccessToken }}>
+      <UserContext.Provider
+        value={{ accessToken, setAccessToken, username, setUsername }}
+      >
         <BrowserRouter>
           {showSigninModal && (
             <SignInModal setShowSigninModal={setShowSigninModal} />

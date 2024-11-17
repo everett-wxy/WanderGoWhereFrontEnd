@@ -15,10 +15,15 @@
   align-items: center;
 }
 
+.flightdetailsinput {
+  width: 60%;
+  margin-top: 8%
+}
+
 .planboarddisplay {
   width: 60%;
   min-height: 100vw;
-  margin-top: 8%;
+  margin-top: 2%;
 }
 
 .flightcontainer {

@@ -70,7 +70,7 @@ input::placeholder {
 
 .popupmodal {
   position: fixed;
-  background: linear-gradient(180deg, white, rgb(227, 227, 227), white);
+  background: linear-gradient(180deg, white, rgb(237, 253, 244), white);
   top: 35vh;
   bottom: 40vh;
   left: 30%;

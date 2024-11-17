@@ -41,10 +41,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-// message={props.message}
-// handleGo={props.handleGo}
-// handleDel={props.handleDel}
-// handleDelMsg={props.handleDelMsg}
-// handleGoMsg={props.handleGoMsg}
-// />,

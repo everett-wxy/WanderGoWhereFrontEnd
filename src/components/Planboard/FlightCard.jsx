@@ -14,7 +14,7 @@ const FlightCard = (props) => {
           <div style={{ marginTop: "10px" }}>
             {/*  if transit data <p>${no} stops</p> ternary expression: else */}
             {/*  <p>${portname}</p> on another line */}
-            <p>Non-stop</p>
+            <p>{props.flightType}</p>
           </div>
           <div style={{ marginTop: "-10px", fontSize: "25px" }}>
             <p>&#10230;</p>
@@ -45,7 +45,7 @@ const FlightCard = (props) => {
             <span style={{ fontWeight: "bolder" }}>{props.duration}</span>
           </p>
           <h5>
-            SGD<span style={{ color: "var(--submain)" }}>{props.price}</span>
+            SGD <span style={{ color: "var(--submain)" }}>{props.price}</span>
           </h5>
         </div>
         <div style={{ padding: "0 20px 10px 0" }}>

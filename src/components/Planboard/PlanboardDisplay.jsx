@@ -6,8 +6,8 @@ import AccomContainer from "./AccomContainer";
 const PlanboardDisplay = () => {
   return (
     <div className={styles.planboarddisplay}>
-      <FlightContainer message="Select a Departure Flight" />
-      <FlightContainer message="Select a Returning Flight" />
+      <FlightContainer message="Select a Departure Flight" flight="departure"/>
+      <FlightContainer message="Select a Returning Flight" flight="return"/>
     </div>
   );
 };

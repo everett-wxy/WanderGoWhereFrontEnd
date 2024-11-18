@@ -6,17 +6,17 @@ import UserContext from "../context/user";
 const BudgetBar = (props) => {
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [budget, setBudget] = useState();
-  const [flightBudget, setFlightBudget] = useState(380);
-  const [hotelBudget, setHotelBudget] = useState(200);
-  const [activityBudget, setActivityBudget] = useState(400);
-  const [foodBudget, setFoodBudget] = useState(450);
+  const [flightBudget, setFlightBudget] = useState(200);
+  const [hotelBudget, setHotelBudget] = useState();
+  const [activityBudget, setActivityBudget] = useState();
+  const [foodBudget, setFoodBudget] = useState();
   const [isUpdate, setIsUpdate] = useState(false);
   const { id } = useParams();
 
-  const getOneTripBudget = async () => {
+  const getOneTrip = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_SERVER + "/WanderGoWhere/trips/" + id,
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/onetrip/" + id,
         {
           method: "GET",
           headers: {
@@ -30,6 +30,19 @@ const BudgetBar = (props) => {
       } else {
         const data = await res.json();
         setBudget(data.budget); //ID always return in array!!!!
+        const totalHotelBudget = data.accoms.reduce((sum, accom) => {
+          return sum + accom.hotelPrice;
+        }, 0);
+        setHotelBudget(totalHotelBudget);
+        const totalActivityBudget = data.activities.reduce((sum, activity) => {
+          return sum + activity.activityPrice;
+        }, 0);
+        setActivityBudget(totalActivityBudget);
+        const totalFoodBudget = data.restaurants.reduce((sum, restaurant) => {
+          return sum + restaurant.foodPrice;
+        }, 0);
+        setFoodBudget(totalFoodBudget);
+
         console.log("Trip budget successfully fetched");
       }
     } catch (error) {
@@ -74,7 +87,7 @@ const BudgetBar = (props) => {
   };
 
   useEffect(() => {
-    getOneTripBudget();
+    getOneTrip();
   }, []);
 
   //change to percentage

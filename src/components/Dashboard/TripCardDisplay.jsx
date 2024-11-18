@@ -3,9 +3,10 @@ import TripCard from "./TripCard";
 import styles from "./Dashboard.module.css";
 import { useContext } from "react";
 import UserContext from "../context/user";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const TripCardDisplay = (props) => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [activity, setActivity] = useState([]);
   const [food, setFood] = useState([]);
@@ -55,6 +56,34 @@ const TripCardDisplay = (props) => {
       } else {
         const data = await res.json();
         getUserTrip();
+        props.setShowDelCfmModal(false);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const createTrip = async () => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/trips",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + accessToken,
+          },
+          body: JSON.stringify({
+            name: "unnamed trip",
+          }),
+        }
+      );
+      if (!res.ok) {
+        throw new Error("data error");
+      } else {
+        const data = await res.json();
+        navigate(`/planboard/${data.createdTrip._id}`);
+        console.log(data._id);
       }
     } catch (error) {
       console.error(error.message);
@@ -75,7 +104,7 @@ const TripCardDisplay = (props) => {
             tripname={trip.name}
             destination={trip.city}
             flighttix={trip.flights}
-            accom="nah"
+            accom={trip.accoms}
             activity={activity}
             food={food}
             departuredate="yes"
@@ -84,7 +113,7 @@ const TripCardDisplay = (props) => {
             returningtime="yes"
             budget={trip.budget}
             handleContinue={() => {
-              navigate("/planboard");
+              navigate(`/planboard/${trip._id}`);
             }}
             handleDelete={() => {
               props.setShowDelCfmModal(true);
@@ -97,7 +126,7 @@ const TripCardDisplay = (props) => {
   ) : (
     <div className={styles.notripcard}>
       <h3 style={{ padding: "0 0 20px 10px" }}>You have no trips yet.</h3>
-      <button onClick={() => navigate("/planboard")}>Start Planning</button>
+      <button onClick={createTrip}>Start Planning</button>
     </div>
   );
 };

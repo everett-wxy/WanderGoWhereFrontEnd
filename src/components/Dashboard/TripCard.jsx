@@ -90,7 +90,7 @@ const TripCard = (props) => {
                   <span style={{ color: "var(--main)", paddingRight: "10px" }}>
                     &#9745;
                   </span>
-                  {props.accom}
+                  Accommodations planned
                 </span>
               ) : (
                 <span>

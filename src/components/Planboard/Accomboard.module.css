@@ -93,3 +93,10 @@
   height: 100%;
   border-radius: 0 0 30px 30px;
 }
+
+.accombtn:disabled {
+  background-color: var(--lightgray);
+}
+.accombtn:-moz-user-disabled {
+  background-color: var(--lightgray);
+}

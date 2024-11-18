@@ -45,7 +45,7 @@ function App() {
             {accessToken.length > 0 && (
               <>
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/planboard" element={<Planboard />} />{" "}
+                <Route path="/planboard/:id" element={<Planboard />} />{" "}
               </>
             )}
           </Routes>

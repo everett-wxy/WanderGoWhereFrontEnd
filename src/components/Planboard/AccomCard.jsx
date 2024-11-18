@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Accomboard.module.css";
 
 const AccomCard = (props) => {
+  // const handleClick = async () => {
+  //   await props.onClick();
+  // };
+
+  // const undoClick = async () => {
+  //   await props.onUndoClick();
+  // };
+
   return (
     <div className={styles.flightcard}>
       <div className={styles.imgwrapper}>
@@ -21,7 +29,30 @@ const AccomCard = (props) => {
         </h5>
       </div>
       <div className={styles.accombtndiv}>
-        <button className={styles.accombtn}>+</button>
+        <button
+          className={styles.accombtn}
+          style={{ backgroundColor: "var(--main)" }}
+          onClick={props.onClick}
+        >
+          {props.btnMsg}
+        </button>
+        {/* {!props.clickedBtn ? (
+          <button
+            className={styles.accombtn}
+            style={{ backgroundColor: "var(--main)" }}
+            onClick={handleClick}
+          >
+            +
+          </button>
+        ) : (
+          <button
+            className={styles.accombtn}
+            style={{ backgroundColor: "orangered" }}
+            onClick={undoClick}
+          >
+            Selected
+          </button> */}
+        {/* )} */}
       </div>
     </div>
   );

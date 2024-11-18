@@ -207,7 +207,10 @@ const AccomContainer = (props) => {
         <div className={styles.flightcardbox}>
           <AccomCard
             key={selectedAccomsData[0]?._id}
-            hotelImg={selectedAccomsData[0].imageOne}
+            hotelImg={
+              selectedAccomsData[0].imageOne ||
+              "https://cdn.midjourney.com/c7ecbb3e-4749-4ba7-9511-8803abf27568/0_2.png"
+            }
             price={selectedAccomsData[0].hotelPrice}
             hotelName={selectedAccomsData[0].hotelName}
             onClick={() => handleDelAccomsFromTrip(tripAccomsIdData)}

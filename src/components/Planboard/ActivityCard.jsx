@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Accomboard.module.css";
 
-const AccomCard = (props) => {
+const ActivityCard = (props) => {
   return (
     <div className={styles.flightcard}>
       <div className={styles.imgwrapper}>
@@ -20,7 +20,7 @@ const AccomCard = (props) => {
       <div className={styles.accombtndiv}>
         <button
           className={styles.accombtn}
-          style={{ backgroundColor: "var(--main)" }}
+          style={props.btnStyle}
           onClick={props.onClick}
         >
           {props.btnMsg}
@@ -30,4 +30,4 @@ const AccomCard = (props) => {
   );
 };
 
-export default AccomCard;
+export default ActivityCard;

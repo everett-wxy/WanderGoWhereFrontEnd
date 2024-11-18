@@ -4,6 +4,7 @@ import UserContext from "../components/context/user";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const NavBar = (props) => {
+  const navigate = useNavigate();
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeout = useRef(null);
@@ -27,6 +28,32 @@ const NavBar = (props) => {
     localStorage.removeItem("accessToken");
     setAccessToken("");
     setUsername("");
+  };
+
+  const createTrip = async () => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/trips",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: "Bearer " + accessToken,
+          },
+          body: JSON.stringify({
+            name: "unnamed trip",
+          }),
+        }
+      );
+      if (!res.ok) {
+        throw new Error("data error");
+      } else {
+        const data = await res.json();
+        navigate(`/planboard/${data.createdTrip._id}`);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   useEffect(() => {
@@ -59,7 +86,7 @@ const NavBar = (props) => {
         {accessToken.length > 0 && (
           <div className="col-md-3 authlink">
             {isDashboard ? (
-              <Link to="/planboard">Add Trip</Link>
+              <Link onClick={createTrip}>Add Trip</Link>
             ) : (
               <Link to="/dashboard">Dashboard</Link>
             )}

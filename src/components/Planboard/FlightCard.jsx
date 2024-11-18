@@ -18,7 +18,7 @@ const FlightCard = (props) => {
     };
 
     const handleButtonClick = () => {
-        props.onClick(itinerary);  // Passing itinerary data to the parent
+        props.onClick(itinerary);
     };
 
     return (
@@ -31,8 +31,6 @@ const FlightCard = (props) => {
                 </div>
                 <div>
                     <div style={{ marginTop: "10px" }}>
-                        {/*  if transit data <p>${no} stops</p> ternary expression: else */}
-                        {/*  <p>${portname}</p> on another line */}
                         <p>{props.flightType}</p>
                     </div>
                     <div style={{ marginTop: "-10px", fontSize: "25px" }}>

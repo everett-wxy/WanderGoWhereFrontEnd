@@ -11,6 +11,7 @@ const FlightContainer = (props) => {
     const { departureFlightData, arrivalFlightData } =
         useContext(FlightContext);
     const [itineraries, setItineraries] = useState([]);
+    let message = `${props.flight} flight`; 
 
     const fetchCurrentItinerary = async () => {
         try {
@@ -46,9 +47,6 @@ const FlightContainer = (props) => {
             ? itineraries.filter((itinerary) => itinerary.isReturn === false)
             : itineraries.filter((itinerary) => itinerary.isReturn === true);
 
-    console.log("displayed itinerary: " + props.flight, displayedItinerary);
-    console.log(displayedItinerary.length === 0);
-
     if (
         (!departureFlightData ||
             departureFlightData.length === 0 ||
@@ -56,6 +54,7 @@ const FlightContainer = (props) => {
             arrivalFlightData.length === 0) &&
         displayedItinerary.length === 0
     ) {
+        message = `Please select ${props.flight}flight`
         return <div>No flight data available. Please try searching again.</div>;
     }
 
@@ -66,7 +65,6 @@ const FlightContainer = (props) => {
             props.flight === "departure" ? departureFlightData : arrivalFlightData;
 
         simplifiedFlightData = flightData.map((flight) => {
-            console.log(`${props.flight} :`, flight);
             let data = {};
 
             if (flight.itineraries[0].segments.length > 1) {
@@ -108,49 +106,6 @@ const FlightContainer = (props) => {
         });
     }
 
-    // const simplifiedFlightData = flightData.map((flight) => {
-    //     console.log(`${props.flight} :`, flight);
-    //     let data = {};
-
-    //     if (flight.itineraries[0].segments.length > 1) {
-    //         data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
-    //         data.depDateTime = flight.itineraries[0].segments[0].departure.at;
-    //         const [depDate, depTime] = data.depDateTime.split("T");
-    //         data.depDate = depDate;
-    //         data.depTime = depTime;
-    //         data.arrPort =
-    //             flight.itineraries[0].segments[
-    //                 flight.itineraries[0].segments.length - 1
-    //             ].arrival.iataCode;
-    //         data.arrDateTime =
-    //             flight.itineraries[0].segments[
-    //                 flight.itineraries[0].segments.length - 1
-    //             ].arrival.at;
-    //         const [arrDate, arrTime] = data.arrDateTime.split("T");
-    //         data.arrDate = arrDate;
-    //         data.arrTime = arrTime;
-    //         data.price = flight.price.total;
-    //         data.duration = flight.itineraries[0].duration;
-    //         data.flightType = `connecting: ${flight.itineraries[0].segments.length}-leg`;
-    //     } else if (flight.itineraries[0].segments.length === 1) {
-    //         data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
-    //         data.depDateTime = flight.itineraries[0].segments[0].departure.at;
-    //         const [depDate, depTime] = data.depDateTime.split("T");
-    //         data.depDate = depDate;
-    //         data.depTime = depTime;
-    //         data.arrPort = flight.itineraries[0].segments[0].arrival.iataCode;
-    //         data.arrDateTime = flight.itineraries[0].segments[0].arrival.at;
-    //         const [arrDate, arrTime] = data.arrDateTime.split("T");
-    //         data.arrDate = arrDate;
-    //         data.arrTime = arrTime;
-    //         data.price = flight.price.total;
-    //         data.duration = flight.itineraries[0].duration;
-    //         data.flightType = "non-stop";
-    //     }
-    //     return data;
-    // });
-
-    // need edit
     const handleAddItinerary = async (itinerary) => {
         try {
             const response = await fetch(
@@ -191,18 +146,13 @@ const FlightContainer = (props) => {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${accessToken}`,
                     },
-                    body: JSON.stringify({ itineraryId }), // Pass itineraryId in body
+                    body: JSON.stringify({ itineraryId }), 
                 }
             );
             const data = await response.json();
             if (response.ok) {
                 alert("Itinerary deleted successfully!");
                 fetchCurrentItinerary();
-                // setItineraries(
-                //     itineraries.filter(
-                //         (itinerary) => itinerary._id !== itineraryId
-                //     )
-                // );
             } else {
                 alert(`Error: ${data.msg}`);
             }
@@ -221,7 +171,7 @@ const FlightContainer = (props) => {
                     padding: "15px 0 0 50px",
                 }}
             >
-                <h6>{props.message}</h6>
+                <h6>{message}</h6>
             </div>
             <div className={styles.flightcardbox}>
                 {displayedItinerary.length > 0

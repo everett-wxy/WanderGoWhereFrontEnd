@@ -3,8 +3,10 @@ import UserContext from "../context/user";
 import styles from "./Accomboard.module.css";
 import ActivityCard from "./ActivityCard";
 import { useParams } from "react-router-dom";
+import { TripContext } from "../context/TripContext";
 
 const ActivityContainer = (props) => {
+  const { triggerUpdate } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [activitiesData, setActivitiesData] = useState([]);
   const [tripActivitiesData, setTripActivitiesData] = useState([]);
@@ -72,6 +74,7 @@ const ActivityContainer = (props) => {
         const data = await res.json();
         console.log("SUCCESS");
         await getTripActivitiesData();
+        triggerUpdate();
       }
     } catch (error) {
       console.error("Error in addActivitiesToTrip:", error.message);
@@ -102,6 +105,7 @@ const ActivityContainer = (props) => {
         const data = await res.json();
         console.log("SUCCESSFULLY DELETED");
         await getTripActivitiesData();
+        triggerUpdate();
       }
     } catch (error) {
       console.error(error.message);

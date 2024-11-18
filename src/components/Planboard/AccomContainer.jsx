@@ -3,8 +3,10 @@ import UserContext from "../context/user";
 import styles from "./Accomboard.module.css";
 import AccomCard from "./AccomCard";
 import { useParams } from "react-router-dom";
+import { TripContext } from "../context/TripContext";
 
 const AccomContainer = (props) => {
+  const { triggerUpdate } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [accomsData, setAccomsData] = useState([]);
   const [tripAccomsIdData, setTripAccomsIdData] = useState(""); //for showing Accoms ID . and toggling
@@ -58,6 +60,7 @@ const AccomContainer = (props) => {
       } else {
         const data = await res.json();
         console.log("SUCCESS");
+        triggerUpdate();
       }
     } catch (error) {
       console.error(error.message);
@@ -86,6 +89,7 @@ const AccomContainer = (props) => {
       } else {
         const data = await res.json();
         console.log("SUCCESSFULLY DELETED");
+        triggerUpdate();
       }
     } catch (error) {
       console.error(error.message);

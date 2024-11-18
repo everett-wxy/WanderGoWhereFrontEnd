@@ -2,15 +2,18 @@ import React, { useEffect, useState, useContext } from "react";
 import styles from "./Budgetbar.module.css";
 import { useParams } from "react-router-dom";
 import UserContext from "../context/user";
+import { TripContext } from "../context/TripContext";
 
 const BudgetBar = (props) => {
+  const { update } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
-  const [budget, setBudget] = useState();
-  const [flightBudget, setFlightBudget] = useState(200);
-  const [hotelBudget, setHotelBudget] = useState();
-  const [activityBudget, setActivityBudget] = useState();
-  const [foodBudget, setFoodBudget] = useState();
+  const [budget, setBudget] = useState(0);
+  const [flightBudget, setFlightBudget] = useState(0);
+  const [hotelBudget, setHotelBudget] = useState(0);
+  const [activityBudget, setActivityBudget] = useState(0);
+  const [foodBudget, setFoodBudget] = useState(0);
   const [isUpdate, setIsUpdate] = useState(false);
+
   const { id } = useParams();
 
   const getOneTrip = async () => {
@@ -30,9 +33,16 @@ const BudgetBar = (props) => {
       } else {
         const data = await res.json();
         setBudget(data.budget); //ID always return in array!!!!
-        const totalHotelBudget = data.accoms.reduce((sum, accom) => {
-          return sum + accom.hotelPrice;
+
+        const totalFlightBudget = data.flight.reduce((sum, flight) => {
+          return sum + flight.cost;
         }, 0);
+        setFlightBudget(totalFlightBudget);
+
+        const totalHotelBudget = data.accoms.reduce((sum, accom) => {
+          return (sum + accom.hotelPrice) * data.days;
+        }, 0);
+
         setHotelBudget(totalHotelBudget);
         const totalActivityBudget = data.activities.reduce((sum, activity) => {
           return sum + activity.activityPrice;
@@ -88,7 +98,7 @@ const BudgetBar = (props) => {
 
   useEffect(() => {
     getOneTrip();
-  }, []);
+  }, [update]);
 
   //change to percentage
   //const x = 4000 100% = 4000 380/4000 x 100

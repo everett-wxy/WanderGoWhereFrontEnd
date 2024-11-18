@@ -37,8 +37,9 @@ const FlightDetailsInput = () => {
       const departureFlightData = await departureResponse.json();
       const arrivalFlightData = await arrivalResponse.json();
 
-      console.log("Departure Flight Data:", departureFlightData);
       setDepartureFlightData(departureFlightData);
+
+      setArrivalFlightData(arrivalFlightData);
 
       console.log("Arrival Flight Data:", arrivalFlightData);
       setArrivalFlightData(arrivalFlightData);

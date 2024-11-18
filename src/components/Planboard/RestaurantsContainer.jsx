@@ -6,9 +6,9 @@ import { useParams } from "react-router-dom";
 import RestaurantCard from "./RestaurantCard";
 
 const RestaurantsContainer = (props) => {
-  const { accessToken, setAcceessToken } = useContext(UserContext);
+  const { accessToken, setAccessToken } = useContext(UserContext);
   const [restaurantsData, setRestaurantsData] = useState([]);
-  const [tripActivitiesData, setTripActivitiesData] = useState([]);
+  const [tripRestaurantsData, setTripRestaurantsData] = useState([]);
   const [isSelectedBtn, setIsSelectedBtn] = useState(false);
   const { id } = useParams();
 
@@ -36,18 +36,18 @@ const RestaurantsContainer = (props) => {
         setRestaurantsData(data);
       }
     } catch (error) {
-      console.error(errorr.message);
+      console.error(error.message);
     }
   };
 
-  const addRestaurantsToTrip = async (id) => {
-    console.log("Restaurant ID being added:", id);
+  const addRestaurantsToTrip = async (restaurantId) => {
+    console.log("Restaurant ID being added:", restaurantId);
 
-    const tripRestaurantId = tripActivitiesData.map((item) => {
+    const tripRestaurantId = tripRestaurantsData.map((item) => {
       item._id;
     }); // current trip restaurant ID
 
-    if (tripRestaurantId.includes(id)) {
+    if (tripRestaurantId.includes(restaurantId)) {
       alert("Restaurant already selected");
       return;
     }
@@ -64,7 +64,7 @@ const RestaurantsContainer = (props) => {
             "Content-type": "application/json",
             authorization: "Bearer " + accessToken,
           },
-          body: JSON.stringify({ restaurantsId: id }),
+          body: JSON.stringify({ restaurantId: restaurantId }),
         }
       );
 
@@ -75,19 +75,79 @@ const RestaurantsContainer = (props) => {
       } else {
         const data = await res.json();
         console.log("SUCCESS");
-        await getRestaurantsData(data);
+        await getRestaurantsData();
       }
     } catch (error) {
-      console.error(error.message);
+      console.error("Error in addRestaurantsToTrip:", error.message);
     }
   };
 
-  
+  const delRestaurantsFromTrip = async (restaurantId) => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_SERVER +
+          "/WanderGoWhere/trips/" +
+          id +
+          "/restaurants",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json",
+            authorization: "Bearer " + accessToken,
+          },
+          body: JSON.stringify({ restaurantId: restaurantId }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("data error");
+      } else {
+        const data = await res.json();
+        console.log("SUCCESSSFULLT DELETED");
+        await getTripRestaurantsData();
+      }
+    } catch (error) {
+      console.error(error.mesaage);
+      return;
+    }
+  };
+
+  const getTripRestaurantsData = async () => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/trips/" + id,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            authorization: "Bearer " + accessToken,
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("data error");
+      } else {
+        const data = await res.json();
+        setTripRestaurantsData(data.restaurants || []);
+        console.log("restaurants data for this trip successfully fetched");
+      }
+    } catch (error) {
+      console.error(error.messasge);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getRestaurantsData();
+      await getTripRestaurantsData();
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.flightcontainer}>
       <div
-        classname={styles.flightctnrcomponent}
+        className={styles.flightctnrcomponent}
         style={{ borderRadius: "40px 40px 0 0", padding: "15px 0 0 50px" }}
       >
         <h6>{props.message}</h6>
@@ -95,10 +155,30 @@ const RestaurantsContainer = (props) => {
 
       <div className={styles.fightcardbox}>
         {restaurantsData.map((item) => {
-          const isSelected = tripRestaurantsData.includes(restaurants._id);
-          console.log(`Restaurant ${restaurants._id} isSelected:`, isSelected);
+          const isSelected = tripRestaurantsData.includes(item._id);
+          console.log(`Restaurant ${item._id} isSelected:`, isSelected);
 
-          return <RestaurantCard />;
+          return (
+            <RestaurantCard
+              key={item._id}
+              restaurantImg={item.imageOne}
+              price={item.foodPrice}
+              restaurantName={item.restaurant}
+              onClick={() => {
+                if (isSelected) {
+                  delRestaurantsFromTrip(item._id);
+                } else {
+                  addRestaurantsToTrip(item._id);
+                }
+              }}
+              // Change button message dynamically based on selection state
+              btnMsg={isSelected ? "Selected" : "+"}
+              // Change button style dynamically
+              btnStyle={{
+                backgroundColor: isSelected ? "orangered" : "var(--main)",
+              }}
+            />
+          );
         })}
       </div>
     </div>

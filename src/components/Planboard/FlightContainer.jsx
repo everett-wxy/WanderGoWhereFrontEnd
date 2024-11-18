@@ -87,6 +87,7 @@ const FlightContainer = (props) => {
                             duration={flight.duration}
                             price={flight.price}
                             flightType={flight.flightType}
+                            isReturn={flight === "departure"? false : true }
                         />
                     );
                 })}

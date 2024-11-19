@@ -160,7 +160,7 @@ const RestaurantsContainer = (props) => {
         <h6>{props.message}</h6>
       </div>
 
-      <div className={styles.fightcardbox}>
+      <div className={styles.flightcardbox}>
         {restaurantsData.map((item) => {
           const isSelected = tripRestaurantsData.includes(item._id);
           console.log(`Restaurant ${item._id} isSelected:`, isSelected);
@@ -170,7 +170,8 @@ const RestaurantsContainer = (props) => {
               key={item._id}
               restaurantImg={item.imageOne}
               price={item.foodPrice}
-              restaurantName={item.restaurant}
+              restaurant={item.restaurant}
+              tier={item.tier}
               onClick={() => {
                 if (isSelected) {
                   delRestaurantsFromTrip(item._id);

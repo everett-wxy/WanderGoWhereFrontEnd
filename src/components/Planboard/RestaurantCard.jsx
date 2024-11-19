@@ -8,7 +8,7 @@ const RestaurantCard = (props) => {
         <img
           className={styles.hotelimg}
           src={props.restaurantImg}
-          alt={props.restaurantName}
+          alt={props.restaurant}
         />
       </div>
 
@@ -16,8 +16,11 @@ const RestaurantCard = (props) => {
         style={{ paddingLeft: "20px", marginTop: "-5px", textAlign: "left" }}
       >
         <p style={{ paddingTop: "20px" }}>
-          <span style={{ fontWeight: "bolder" }}>{props.restaurantName}</span>
+          <span style={{ fontWeight: "bolder" }}>{props.restaurant}</span>
+          <br />
+          <span>{props.tier}</span>
         </p>
+
         <h5>
           SGD<span style={{ color: "var(--submain)" }}>{props.price}</span>
         </h5>

@@ -17,7 +17,7 @@ const RestaurantsContainer = (props) => {
   const getRestaurantsData = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_SERVER + "/wanderGoWhere/restaurants",
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/restaurants",
         {
           method: "POST",
           headers: {
@@ -75,7 +75,7 @@ const RestaurantsContainer = (props) => {
       } else {
         const data = await res.json();
         console.log("SUCCESS");
-        await getRestaurantsData();
+        await getTripRestaurantsData();
       }
     } catch (error) {
       console.error("Error in addRestaurantsToTrip:", error.message);
@@ -144,11 +144,18 @@ const RestaurantsContainer = (props) => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    console.log("Updated tripRestaurantsData:", tripRestaurantsData);
+  }, [tripRestaurantsData]);
+
   return (
     <div className={styles.flightcontainer}>
       <div
         className={styles.flightctnrcomponent}
-        style={{ borderRadius: "40px 40px 0 0", padding: "15px 0 0 50px" }}
+        style={{
+          borderRadius: "40px 40px 0 0",
+          padding: "15px 0 0 50px",
+        }}
       >
         <h6>{props.message}</h6>
       </div>
@@ -163,7 +170,8 @@ const RestaurantsContainer = (props) => {
               key={item._id}
               restaurantImg={item.imageOne}
               price={item.foodPrice}
-              restaurantName={item.restaurant}
+              restaurant={item.restaurant}
+              tier={item.tier}
               onClick={() => {
                 if (isSelected) {
                   delRestaurantsFromTrip(item._id);

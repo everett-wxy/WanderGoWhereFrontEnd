@@ -102,15 +102,45 @@ const TripCardDisplay = (props) => {
             key={trip._id}
             tripidx={idx}
             tripname={trip.name}
-            destination={trip.city}
-            flighttix={trip.flights.length}
+            destination={
+              Array.isArray(trip.itineraries) && trip.itineraries.length > 0
+                ? trip.itineraries.map(
+                    (itinerary) => itinerary.arrPort || "Select a city"
+                  )
+                : "Select a city"
+            }
+            flighttix={trip.itineraries.length}
             accom={trip.accoms.length}
             activity={trip.activities.length}
             food={trip.restaurants.length}
-            departuredate="yes"
-            departuretime="yes"
-            returningdate="yes"
-            returningtime="yes"
+            departuredate={
+              Array.isArray(trip.itineraries) && trip.itineraries.length > 0
+                ? trip.itineraries.map(
+                    (itinerary) => itinerary.depDate || "Departure Date"
+                  )
+                : "Departure Date"
+            }
+            departuretime={
+              Array.isArray(trip.itineraries) && trip.itineraries.length > 0
+                ? trip.itineraries.map(
+                    (itinerary) => itinerary.depTime || "Departure Time"
+                  )
+                : "Departure Date"
+            }
+            returningdate={
+              Array.isArray(trip.itineraries) && trip.itineraries.length > 0
+                ? trip.itineraries.map(
+                    (itinerary) => itinerary.arrDate || "Arrival Date"
+                  )
+                : "Arrival Date"
+            }
+            returningtime={
+              Array.isArray(trip.itineraries) && trip.itineraries.length > 0
+                ? trip.itineraries.map(
+                    (itinerary) => itinerary.arrTime || "Arrival Time"
+                  )
+                : "Arrival Time"
+            }
             budget={trip.budget}
             handleContinue={() => {
               navigate(`/planboard/${trip._id}`);

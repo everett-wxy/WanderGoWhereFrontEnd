@@ -5,7 +5,11 @@ const ActivityCard = (props) => {
   return (
     <div className={styles.flightcard}>
       <div className={styles.imgwrapper}>
-        <img className={styles.hotelimg} src={props.hotelImg} />
+        <img
+          className={styles.hotelimg}
+          src={props.hotelImg}
+          alt={props.hotelName}
+        />
       </div>
       <div
         style={{ paddingLeft: "20px", marginTop: "-5px", textAlign: "left" }}

@@ -54,17 +54,6 @@ const FlightContainer = (props) => {
       arrivalFlightData.length === 0) &&
     displayedItinerary.length === 0;
 
-  // if (
-  //   (!departureFlightData ||
-  //     departureFlightData.length === 0 ||
-  //     !arrivalFlightData ||
-  //     arrivalFlightData.length === 0) &&
-  //   displayedItinerary.length === 0
-  // ) {
-  //   message = `Please select ${props.flight}flight`;
-  //   return <div>No flight data available. Please try searching again.</div>;
-  // }
-
   let simplifiedFlightData = [];
 
   if (departureFlightData || arrivalFlightData) {
@@ -224,6 +213,11 @@ const FlightContainer = (props) => {
                     price={itinerary.price}
                     flightType={itinerary.flightType}
                     onClick={() => handleDeleteItinerary(itinerary._id)}
+                    style={{
+                      backgroundColor: "orangered",
+                      borderRadius: "0 0 20px 20px",
+                    }}
+                    msg="Selected"
                   />
                 ))
               : simplifiedFlightData.map((flight, index) => {
@@ -242,6 +236,11 @@ const FlightContainer = (props) => {
                       flightType={flight.flightType}
                       isReturn={props.flight === "departure" ? false : true}
                       onClick={handleAddItinerary}
+                      style={{
+                        backgroundColor: "var(--main)",
+                        borderRadius: "0 0 20px 20px",
+                      }}
+                      msg="+"
                     />
                   );
                 })}

@@ -4,9 +4,12 @@ import FlightCard from "./FlightCard";
 import { FlightContext } from "../context/FlightContext";
 import { useParams } from "react-router-dom";
 import UserContext from "../context/user";
+import { TripContext } from "../context/TripContext";
+import { differenceInDays } from "date-fns";
 
 const FlightContainer = (props) => {
   const { id } = useParams();
+  const { triggerUpdate, setDestinationInput } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const { departureFlightData, arrivalFlightData } = useContext(FlightContext);
   const [itineraries, setItineraries] = useState([]);
@@ -44,16 +47,23 @@ const FlightContainer = (props) => {
       ? itineraries.filter((itinerary) => itinerary.isReturn === false)
       : itineraries.filter((itinerary) => itinerary.isReturn === true);
 
-  if (
+  const shouldRenderNoDataMessage =
     (!departureFlightData ||
       departureFlightData.length === 0 ||
       !arrivalFlightData ||
       arrivalFlightData.length === 0) &&
-    displayedItinerary.length === 0
-  ) {
-    message = `Please select ${props.flight}flight`;
-    return <div>No flight data available. Please try searching again.</div>;
-  }
+    displayedItinerary.length === 0;
+
+  // if (
+  //   (!departureFlightData ||
+  //     departureFlightData.length === 0 ||
+  //     !arrivalFlightData ||
+  //     arrivalFlightData.length === 0) &&
+  //   displayedItinerary.length === 0
+  // ) {
+  //   message = `Please select ${props.flight}flight`;
+  //   return <div>No flight data available. Please try searching again.</div>;
+  // }
 
   let simplifiedFlightData = [];
 
@@ -117,9 +127,14 @@ const FlightContainer = (props) => {
         }
       );
       const data = await response.json();
+      console.log(data);
       if (response.ok) {
         alert("Itinerary added successfully!");
         fetchCurrentItinerary();
+        triggerUpdate();
+        // if (data && data.arrport) {
+        //   setDestinationInput(data.arrport);
+        // }
       } else {
         alert(`Error: ${data.msg}`);
       }
@@ -145,7 +160,10 @@ const FlightContainer = (props) => {
       const data = await response.json();
       if (response.ok) {
         alert("Itinerary deleted successfully!");
+
         fetchCurrentItinerary();
+        setDestinationInput("");
+        triggerUpdate();
       } else {
         alert(`Error: ${data.msg}`);
       }
@@ -155,55 +173,81 @@ const FlightContainer = (props) => {
     }
   };
 
+  const calculateDuration = (startDate, endDate) => {
+    return duration(new Date(endDate), new Date(startDate));
+  };
+
+  const handleSelection = async (flightData) => {
+    try {
+      handleAddItinerary();
+      console.log(`Selected ${flight} flight:`, flightData);
+      if (onComplete) {
+        onComplete();
+      }
+    } catch (error) {
+      console.error("Selection error", error);
+    }
+  };
+
+  useEffect(() => {
+    console.log();
+  });
+
   return (
     <div className={styles.flightcontainer}>
-      <div
-        className={styles.flightctnrcomponent}
-        style={{
-          borderRadius: "40px 40px 0 0",
-          padding: "15px 0 0 50px",
-        }}
-      >
-        <h6>{message}</h6>
-      </div>
-      <div className={styles.flightcardbox}>
-        {displayedItinerary.length > 0
-          ? displayedItinerary.map((itinerary) => (
-              <FlightCard
-                key={itinerary._id}
-                depport={itinerary.depPort}
-                depdate={itinerary.depDate}
-                deptime={itinerary.depTime}
-                arrport={itinerary.arrPort}
-                arrdate={itinerary.arrDate}
-                arrtime={itinerary.arrTime}
-                class="Peasant"
-                duration={itinerary.duration}
-                price={itinerary.price}
-                flightType={itinerary.flightType}
-                onClick={() => handleDeleteItinerary(itinerary._id)}
-              />
-            ))
-          : simplifiedFlightData.map((flight, index) => {
-              return (
-                <FlightCard
-                  key={index}
-                  depport={flight.depPort}
-                  depdate={flight.depDate}
-                  deptime={flight.depTime}
-                  arrport={flight.arrPort}
-                  arrdate={flight.arrDate}
-                  arrtime={flight.arrTime}
-                  class="Peasant"
-                  duration={flight.duration}
-                  price={flight.price}
-                  flightType={flight.flightType}
-                  isReturn={props.flight === "departure" ? false : true}
-                  onClick={handleAddItinerary}
-                />
-              );
-            })}
-      </div>
+      {shouldRenderNoDataMessage ? (
+        <div>No flight data available. Please try searching again.</div>
+      ) : (
+        <>
+          <div
+            className={styles.flightctnrcomponent}
+            style={{
+              borderRadius: "40px 40px 0 0",
+              padding: "15px 0 0 50px",
+            }}
+          >
+            <h6>{message}</h6>
+          </div>
+          <div className={styles.flightcardbox}>
+            {displayedItinerary.length > 0
+              ? displayedItinerary.map((itinerary) => (
+                  <FlightCard
+                    key={itinerary._id}
+                    depport={itinerary.depPort}
+                    depdate={itinerary.depDate}
+                    deptime={itinerary.depTime}
+                    arrport={itinerary.arrPort}
+                    arrdate={itinerary.arrDate}
+                    arrtime={itinerary.arrTime}
+                    class="Peasant"
+                    duration={itinerary.duration}
+                    price={itinerary.price}
+                    flightType={itinerary.flightType}
+                    onClick={() => handleDeleteItinerary(itinerary._id)}
+                  />
+                ))
+              : simplifiedFlightData.map((flight, index) => {
+                  return (
+                    <FlightCard
+                      key={index}
+                      depport={flight.depPort}
+                      depdate={flight.depDate}
+                      deptime={flight.depTime}
+                      arrport={flight.arrPort}
+                      arrdate={flight.arrDate}
+                      arrtime={flight.arrTime}
+                      class="Peasant"
+                      duration={flight.duration}
+                      price={flight.price}
+                      flightType={flight.flightType}
+                      isReturn={props.flight === "departure" ? false : true}
+                      onClick={handleAddItinerary}
+                    />
+                  );
+                })}
+          </div>
+        </>
+      )}
     </div>
   );
 };

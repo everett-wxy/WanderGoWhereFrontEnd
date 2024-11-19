@@ -6,15 +6,34 @@ import { useParams } from "react-router-dom";
 import { TripContext } from "../context/TripContext";
 
 const AccomContainer = (props) => {
-  const { triggerUpdate } = useContext(TripContext);
+  const { triggerUpdate, destinationInput } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [accomsData, setAccomsData] = useState([]);
+  const { flightItinerary, setFlightItinerary } = useState([]);
   const [tripAccomsIdData, setTripAccomsIdData] = useState(""); //for showing Accoms ID . and toggling
   const [selectedAccomsData, setSelectedAccomsData] = useState([]);
   const { id } = useParams();
 
   //GET AccomsData to map out choices.
-  const getAccomsData = async () => {
+  const getAccomsData = async (destinationInput) => {
+    let city = destinationInput;
+
+    if (city === "IST") {
+      city = "Istanbul, Turkey";
+    }
+    if (city === "CHC") {
+      city = "Christchurch, New Zealand";
+    }
+    if (city === "CTS") {
+      city = "Sapporo, Hokkaido, Japan";
+    }
+    if (city === "TOS") {
+      city = "Tromso, Norway";
+    }
+    if (city === "CAI") {
+      city = "Cairo, Egypt";
+    }
+
     try {
       const res = await fetch(
         import.meta.env.VITE_SERVER + "/WanderGoWhere/accoms",
@@ -24,7 +43,7 @@ const AccomContainer = (props) => {
             "Content-type": "application/json",
           },
           body: JSON.stringify({
-            city: "Sapporo, Hokkaido, Japan", //sample - fix for inputs.
+            city: city, //sample - fix for inputs.
           }),
         }
       );
@@ -128,6 +147,9 @@ const AccomContainer = (props) => {
     } else addAccomsToTrip(accomId);
     setTripAccomsIdData(accomId);
     getPopulatedAccomsData(accomId);
+    if (onComplete) {
+      onComplete();
+    }
   };
 
   const handleDelAccomsFromTrip = (accomId) => {
@@ -166,11 +188,13 @@ const AccomContainer = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getAccomsData();
+      if (destinationInput) {
+        await getAccomsData(destinationInput);
+      }
       await getTripAccomsIdData();
     };
     fetchData();
-  }, []);
+  }, [destinationInput]);
 
   useEffect(() => {
     if (tripAccomsIdData) {
@@ -190,6 +214,7 @@ const AccomContainer = (props) => {
       >
         <h6>{props.message}</h6>
       </div>
+      {}
       {!tripAccomsIdData ? (
         <div className={styles.flightcardbox}>
           {accomsData.map((accom) => {

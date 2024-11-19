@@ -6,11 +6,10 @@ import { useParams } from "react-router-dom";
 import { TripContext } from "../context/TripContext";
 
 const ActivityContainer = (props) => {
-  const { triggerUpdate } = useContext(TripContext);
+  const { triggerUpdate, destinationInput } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [activitiesData, setActivitiesData] = useState([]);
   const [tripActivitiesData, setTripActivitiesData] = useState([]);
-  const [destination, setDestination] = useState("");
   const { id } = useParams();
 
   //if tripActivitiesData.include activityId => btn = orange
@@ -31,7 +30,6 @@ const ActivityContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
-        setDestination(data.flights.city);
       }
     } catch (error) {
       console.error(error.message);
@@ -39,8 +37,6 @@ const ActivityContainer = (props) => {
   };
 
   const getActivitiesData = async (query) => {
-    const flightDestination = query.includes("Sapporo");
-
     try {
       const res = await fetch(
         import.meta.env.VITE_SERVER + "/WanderGoWhere/activities",
@@ -50,7 +46,7 @@ const ActivityContainer = (props) => {
             "Content-type": "application/json",
           },
           body: JSON.stringify({
-            city: "Cairo, Egypt", //sample - fix for inputs.
+            city: query, //sample - fix for inputs.
           }),
         }
       );
@@ -165,7 +161,7 @@ const ActivityContainer = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       await getTripData();
-      await getActivitiesData();
+      await getActivitiesData("Cairo, Egypt");
       await getTripActivitiesData();
     };
     fetchData();
@@ -208,9 +204,7 @@ const ActivityContainer = (props) => {
                   addActivityToTrip(activity._id);
                 }
               }}
-              // Change button message dynamically based on selection state
               btnMsg={isSelected ? "Selected" : "+"}
-              // Change button style dynamically
               btnStyle={{
                 backgroundColor: isSelected ? "orangered" : "var(--main)",
               }}

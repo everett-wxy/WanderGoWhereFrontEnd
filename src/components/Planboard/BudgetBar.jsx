@@ -34,8 +34,8 @@ const BudgetBar = (props) => {
         const data = await res.json();
         setBudget(data.budget); //ID always return in array!!!!
 
-        const totalFlightBudget = data.flight.reduce((sum, flight) => {
-          return sum + flight.cost;
+        const totalFlightBudget = data.itineraries.reduce((sum, flight) => {
+          return sum + flight.price;
         }, 0);
         setFlightBudget(totalFlightBudget);
 

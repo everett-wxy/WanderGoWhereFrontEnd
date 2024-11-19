@@ -153,7 +153,7 @@ const RestaurantsContainer = (props) => {
         <h6>{props.message}</h6>
       </div>
 
-      <div className={styles.fightcardbox}>
+      <div className={styles.flightcardbox}>
         {restaurantsData.map((item) => {
           const isSelected = tripRestaurantsData.includes(item._id);
           console.log(`Restaurant ${item._id} isSelected:`, isSelected);

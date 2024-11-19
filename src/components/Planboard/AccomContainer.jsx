@@ -9,7 +9,6 @@ const AccomContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [accomsData, setAccomsData] = useState([]);
-  const { flightItinerary, setFlightItinerary } = useState([]);
   const [tripAccomsIdData, setTripAccomsIdData] = useState(""); //for showing Accoms ID . and toggling
   const [selectedAccomsData, setSelectedAccomsData] = useState([]);
   const { id } = useParams();
@@ -147,8 +146,8 @@ const AccomContainer = (props) => {
     } else addAccomsToTrip(accomId);
     setTripAccomsIdData(accomId);
     getPopulatedAccomsData(accomId);
-    if (onComplete) {
-      onComplete();
+    if (props.onComplete) {
+      props.onComplete();
     }
   };
 
@@ -197,6 +196,12 @@ const AccomContainer = (props) => {
   }, [destinationInput]);
 
   useEffect(() => {
+    if (destinationInput) {
+      getAccomsData(destinationInput);
+    }
+  }, [destinationInput]);
+
+  useEffect(() => {
     if (tripAccomsIdData) {
       console.log("Trip Accommodations Data Updated:", tripAccomsIdData);
       getPopulatedAccomsData(tripAccomsIdData);
@@ -214,7 +219,6 @@ const AccomContainer = (props) => {
       >
         <h6>{props.message}</h6>
       </div>
-      {}
       {!tripAccomsIdData ? (
         <div className={styles.flightcardbox}>
           {accomsData.map((accom) => {
@@ -228,7 +232,7 @@ const AccomContainer = (props) => {
                   handleAddAccomsToTrip(accom._id);
                 }}
                 btnMsg="+"
-                style={{ backgroungColor: "var(--main)" }}
+                style={{ backgroundColor: "var(--main)" }}
               />
             );
           })}
@@ -245,7 +249,7 @@ const AccomContainer = (props) => {
             hotelName={selectedAccomsData[0].hotelName}
             onClick={() => handleDelAccomsFromTrip(tripAccomsIdData)}
             btnMsg="Selected"
-            style={{ backgroungColor: "orangered" }}
+            style={{ backgroundColor: "orangered" }}
           />
         </div>
       ) : (

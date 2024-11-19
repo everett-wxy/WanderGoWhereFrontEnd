@@ -9,7 +9,7 @@ import { differenceInDays } from "date-fns";
 
 const FlightContainer = (props) => {
   const { id } = useParams();
-  const { triggerUpdate, setDestinationInput } = useContext(TripContext);
+  const { triggerUpdate, triggerInputUpdate } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const { departureFlightData, arrivalFlightData } = useContext(FlightContext);
   const [itineraries, setItineraries] = useState([]);
@@ -121,10 +121,12 @@ const FlightContainer = (props) => {
         alert("Itinerary added successfully!");
         fetchCurrentItinerary();
         triggerUpdate();
-        findItinerary(data.itineraryId)
-        // if (data && data.arrport) {
-        //   setDestinationInput(data.arrport);
-        // }
+        findItinerary(data.itineraryId);
+
+        if (props.onComplete) {
+          console.log("onComplete triggered");
+          props.onComplete();
+        }
       } else {
         alert(`Error: ${data.msg}`);
       }
@@ -152,8 +154,8 @@ const FlightContainer = (props) => {
         alert("Itinerary deleted successfully!");
 
         fetchCurrentItinerary();
-        setDestinationInput("");
         triggerUpdate();
+        triggerInputUpdate("");
       } else {
         alert(`Error: ${data.msg}`);
       }
@@ -165,44 +167,32 @@ const FlightContainer = (props) => {
 
   const findItinerary = async (itineraryId) => {
     try {
-        const response = await fetch(
-            `${
-                import.meta.env.VITE_SERVER
-            }/WanderGoWhere/trips/${id}/getOneItinerary`,
-            {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ itineraryId }),
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_SERVER
+        }/WanderGoWhere/trips/${id}/getOneItinerary`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ itineraryId }),
         }
-        const data = await response.json();
-        console.log("findItinerary: " , data);
-        return data 
-    } catch (error) {
-        console.error("Failed to fetch itineraries:", error);
-    }
-};
+      );
 
-  const calculateDuration = (startDate, endDate) => {
-    return duration(new Date(endDate), new Date(startDate));
-  };
-
-  const handleSelection = async (flightData) => {
-    try {
-      handleAddItinerary();
-      console.log(`Selected ${flight} flight:`, flightData);
-      if (onComplete) {
-        onComplete();
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
       }
+      const data = await response.json();
+      console.log("findItinerary: ", data);
+      if (data && data.itinerary && data.itinerary.arrPort) {
+        console.log("Triggering input update with: ", data.itinerary.arrPort);
+        triggerInputUpdate(data.itinerary.arrPort);
+      }
+      return data;
     } catch (error) {
-      console.error("Selection error", error);
+      console.error("Failed to fetch itineraries:", error);
     }
   };
 

@@ -6,37 +6,39 @@ import ActivityContainer from "./ActivityContainer";
 import RestaurantsContainer from "./RestaurantsContainer";
 
 const PlanboardDisplay = () => {
-  // const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(1);
 
-  // const nextStep = () => setCurrentStep((prevStep) => prevStep + 1);
+  const nextStep = () => setCurrentStep((prevStep) => prevStep + 1);
   return (
     <div className={styles.planboarddisplay}>
-      {/* {currentStep === 1 && ( */}
       <FlightContainer
         message="Select a Departure Flight"
         flight="departure"
-        // onComplete={nextStep}
+        onComplete={nextStep}
       />
-      {/* )}
-      {currentStep === 2 && ( */}
-      <FlightContainer
-        message="Select a Returning Flight"
-        flight="return"
-        // onComplete={nextStep}
-      />
-      {/* )}
-      {currentStep === 3 && ( */}
-      <AccomContainer message="Select an Accommodation" />
-      {/* )}
-      {currentStep === 4 && ( */}
-      <ActivityContainer message="Select Activities" />
-      {/* )}
-      {currentStep === 5 && ( */}
-      <RestaurantsContainer
-        message="Select Restaurants"
-        // onComplete={nextStep}
-      />
-      {/* )} */}
+
+      {currentStep >= 2 && (
+        <FlightContainer
+          message="Select a Returning Flight"
+          flight="return"
+          onComplete={nextStep}
+        />
+      )}
+      {currentStep >= 3 && (
+        <AccomContainer
+          message="Select an Accommodation"
+          onComplete={nextStep}
+        />
+      )}
+      {currentStep >= 4 && (
+        <ActivityContainer message="Select Activities" onComplete={nextStep} />
+      )}
+      {currentStep >= 5 && (
+        <RestaurantsContainer
+          message="Select Restaurants"
+          onComplete={nextStep}
+        />
+      )}
     </div>
   );
 };

@@ -19,7 +19,7 @@ const BudgetBar = (props) => {
   const { id } = useParams();
 
   const calculateDuration = (startDate, endDate) => {
-    return duration(new Date(endDate), new Date(startDate));
+    return differenceInDays(new Date(endDate), new Date(startDate));
   };
 
   const getOneTrip = async () => {
@@ -40,14 +40,14 @@ const BudgetBar = (props) => {
         const data = await res.json();
         setBudget(data.budget); //ID always return in array!!!!
 
-        // if (data.itineraries[1]) {
-        //   setDuration(
-        //     calculateDuration(
-        //       data.itineraries.depDate,
-        //       data.itineraries[1].arrDate
-        //     )
-        //   );
-        // }
+        if (data.itineraries[1]) {
+          setDuration(
+            calculateDuration(
+              data.itineraries[0].depDate,
+              data.itineraries[1].arrDate
+            )
+          );
+        }
 
         const totalFlightBudget = data.itineraries.reduce((sum, flight) => {
           return sum + flight.price;
@@ -55,7 +55,7 @@ const BudgetBar = (props) => {
         setFlightBudget(totalFlightBudget);
 
         const totalHotelBudget = data.accoms.reduce((sum, accom) => {
-          return (sum + accom.hotelPrice) * data.days;
+          return (sum + accom.hotelPrice) * duration;
         }, 0);
 
         setHotelBudget(totalHotelBudget);
@@ -94,7 +94,7 @@ const BudgetBar = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
-        getOneTripBudget();
+        getOneTrip();
         console.log("budget updated");
       }
     } catch (error) {

@@ -3,17 +3,40 @@ import UserContext from "../context/user";
 import styles from "./Accomboard.module.css";
 import ActivityCard from "./ActivityCard";
 import { useParams } from "react-router-dom";
+import { TripContext } from "../context/TripContext";
 
 const ActivityContainer = (props) => {
+  const { triggerUpdate, destinationInput } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [activitiesData, setActivitiesData] = useState([]);
   const [tripActivitiesData, setTripActivitiesData] = useState([]);
-  const [isSelectedBtn, setIsSelectedBtn] = useState(false);
   const { id } = useParams();
 
   //if tripActivitiesData.include activityId => btn = orange
 
-  const getActivitiesData = async () => {
+  const getTripData = async () => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/onetrip/" + id,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            authorization: "Bearer " + accessToken,
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("data error");
+      } else {
+        const data = await res.json();
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const getActivitiesData = async (query) => {
     try {
       const res = await fetch(
         import.meta.env.VITE_SERVER + "/WanderGoWhere/activities",
@@ -23,7 +46,7 @@ const ActivityContainer = (props) => {
             "Content-type": "application/json",
           },
           body: JSON.stringify({
-            city: "Cairo, Egypt", //sample - fix for inputs.
+            city: query, //sample - fix for inputs.
           }),
         }
       );
@@ -72,6 +95,7 @@ const ActivityContainer = (props) => {
         const data = await res.json();
         console.log("SUCCESS");
         await getTripActivitiesData();
+        triggerUpdate();
       }
     } catch (error) {
       console.error("Error in addActivitiesToTrip:", error.message);
@@ -102,6 +126,7 @@ const ActivityContainer = (props) => {
         const data = await res.json();
         console.log("SUCCESSFULLY DELETED");
         await getTripActivitiesData();
+        triggerUpdate();
       }
     } catch (error) {
       console.error(error.message);
@@ -135,7 +160,8 @@ const ActivityContainer = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getActivitiesData();
+      await getTripData();
+      await getActivitiesData("Cairo, Egypt");
       await getTripActivitiesData();
     };
     fetchData();
@@ -178,9 +204,7 @@ const ActivityContainer = (props) => {
                   addActivityToTrip(activity._id);
                 }
               }}
-              // Change button message dynamically based on selection state
               btnMsg={isSelected ? "Selected" : "+"}
-              // Change button style dynamically
               btnStyle={{
                 backgroundColor: isSelected ? "orangered" : "var(--main)",
               }}

@@ -103,10 +103,10 @@ const TripCardDisplay = (props) => {
             tripidx={idx}
             tripname={trip.name}
             destination={trip.city}
-            flighttix={trip.flights}
-            accom={trip.accoms}
-            activity={activity}
-            food={food}
+            flighttix={trip.flights.length}
+            accom={trip.accoms.length}
+            activity={trip.activities.length}
+            food={trip.restaurants.length}
             departuredate="yes"
             departuretime="yes"
             returningdate="yes"

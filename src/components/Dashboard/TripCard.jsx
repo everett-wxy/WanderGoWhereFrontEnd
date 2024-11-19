@@ -30,6 +30,7 @@ const TripCard = (props) => {
         >
           <h6>
             <span style={{ fontWeight: 200 }}>Trip {props.tripidx + 1}: </span>
+
             {props.tripname}
           </h6>
         </div>
@@ -68,29 +69,29 @@ const TripCard = (props) => {
           <div></div>
           <ul className={styles.checklist}>
             <li>
-              {props.flighttix.length > 0 ? (
+              {props.flighttix ? (
                 <span>
                   <span style={{ color: "var(--main)", paddingRight: "10px" }}>
                     &#9745;
                   </span>
-                  {props.flighttix}
+                  Flights planned
                 </span>
               ) : (
                 <span>
                   <span style={{ color: "var(--placeholder)" }}>
-                    <span style={{ paddingRight: "10px" }}>&#9744;</span> No
+                    <span style={{ paddingRight: "10px" }}>&#9744;</span>No
                     flights planned
                   </span>
                 </span>
               )}
             </li>
             <li>
-              {props.accom.length > 0 ? (
+              {props.accom ? (
                 <span>
                   <span style={{ color: "var(--main)", paddingRight: "10px" }}>
                     &#9745;
                   </span>
-                  Accommodations planned
+                  {props.accom} accommodations planned
                 </span>
               ) : (
                 <span>
@@ -102,12 +103,12 @@ const TripCard = (props) => {
               )}
             </li>
             <li>
-              {props.activity.length > 0 ? (
+              {props.activity ? (
                 <span>
                   <span style={{ color: "var(--main)", paddingRight: "10px" }}>
                     &#9745;
                   </span>
-                  {props.activity}
+                  {props.activity} activities planned
                 </span>
               ) : (
                 <span style={{ color: "var(--placeholder)" }}>
@@ -117,12 +118,12 @@ const TripCard = (props) => {
               )}
             </li>
             <li>
-              {props.food.length > 0 ? (
+              {props.food ? (
                 <span>
                   <span style={{ color: "var(--main)", paddingRight: "10px" }}>
                     &#9745;
                   </span>
-                  {props.food}
+                  {props.food} food planned
                 </span>
               ) : (
                 <span>

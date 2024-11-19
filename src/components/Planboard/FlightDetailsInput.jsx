@@ -56,7 +56,7 @@ const FlightDetailsInput = () => {
             destinationInput = 'CAI';
             break;
         default:
-            destinationInput = origin;
+            destinationInput = destination;
     } 
 
     event.preventDefault();
@@ -89,6 +89,7 @@ const FlightDetailsInput = () => {
 
       const departureFlightData = await departureResponse.json();
       const arrivalFlightData = await arrivalResponse.json();
+      console.log(departureFlightData);
       setDepartureFlightData(departureFlightData);
       setArrivalFlightData(arrivalFlightData);
       setIsLoading(false);

@@ -31,7 +31,7 @@ const FlightContainer = (props) => {
         throw new Error(`Error: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log("itinerary for current trip fetched");
+    //   console.log("itinerary for current trip fetched");
       setItineraries(data.itineraries);
     } catch (error) {
       console.error("Failed to fetch itineraries:", error);
@@ -60,9 +60,10 @@ const FlightContainer = (props) => {
     const flightData =
       props.flight === "departure" ? departureFlightData : arrivalFlightData;
 
-    simplifiedFlightData = flightData.map((flight) => {
-      let data = {};
+    const {dictionaries} = flightData; 
 
+    simplifiedFlightData = flightData.data.map((flight) => {
+      let data = {};
       if (flight.itineraries[0].segments.length > 1) {
         data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
         data.depDateTime = flight.itineraries[0].segments[0].departure.at;
@@ -83,6 +84,7 @@ const FlightContainer = (props) => {
         data.price = flight.price.total;
         data.duration = flight.itineraries[0].duration;
         data.flightType = `connecting: ${flight.itineraries[0].segments.length}-leg`;
+        data.flightCarrier = dictionaries.carriers[(flight.itineraries[0].segments[0].carrierCode)]
       } else if (flight.itineraries[0].segments.length === 1) {
         data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
         data.depDateTime = flight.itineraries[0].segments[0].departure.at;
@@ -97,7 +99,9 @@ const FlightContainer = (props) => {
         data.price = flight.price.total;
         data.duration = flight.itineraries[0].duration;
         data.flightType = "non-stop";
+        data.flightCarrier = dictionaries.carriers[(flight.itineraries[0].segments[0].carrierCode)]
       }
+    //   console.log(data);
       return data;
     });
   }
@@ -122,6 +126,37 @@ const FlightContainer = (props) => {
         fetchCurrentItinerary();
         triggerUpdate();
         findItinerary(data.itineraryId)
+        // if (data && data.arrport) {
+        //   setDestinationInput(data.arrport);
+        // }
+      } else {
+        alert(`Error: ${data.msg}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error adding itinerary.");
+    }
+  };
+
+  const handleAddReturnItinerary = async (itinerary) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER}/WanderGoWhere/trips/${id}/itinerary`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ itinerary }),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        alert("Itinerary added successfully!");
+        fetchCurrentItinerary();
+        // triggerUpdate();
         // if (data && data.arrport) {
         //   setDestinationInput(data.arrport);
         // }
@@ -240,6 +275,7 @@ const FlightContainer = (props) => {
                     duration={itinerary.duration}
                     price={itinerary.price}
                     flightType={itinerary.flightType}
+                    flightCarrier={itinerary.flightCarrier}
                     onClick={() => handleDeleteItinerary(itinerary._id)}
                     style={{
                       backgroundColor: "orangered",
@@ -263,7 +299,8 @@ const FlightContainer = (props) => {
                       price={flight.price}
                       flightType={flight.flightType}
                       isReturn={props.flight === "departure" ? false : true}
-                      onClick={handleAddItinerary}
+                      flightCarrier={flight.flightCarrier}
+                      onClick={props.flight === "departure" ? handleAddItinerary : handleAddReturnItinerary}
                       style={{
                         backgroundColor: "var(--main)",
                         borderRadius: "0 0 20px 20px",

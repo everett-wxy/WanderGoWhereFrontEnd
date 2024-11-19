@@ -14,6 +14,7 @@ const FlightCard = (props) => {
     price: props.price,
     flightType: props.flightType,
     isReturn: props.isReturn,
+    flightCarrier: props.flightCarrier
   };
 
   const handleButtonClick = () => {
@@ -22,6 +23,9 @@ const FlightCard = (props) => {
 
   return (
     <div className={styles.flightcard}>
+        <div>
+            <p>{props.flightCarrier}</p>
+        </div>
       <div className={styles.flightlocationanddate}>
         <div>
           <h3>{props.depport}</h3>

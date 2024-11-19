@@ -31,7 +31,7 @@ const FlightContainer = (props) => {
         throw new Error(`Error: ${response.statusText}`);
       }
       const data = await response.json();
-    //   console.log("itinerary for current trip fetched");
+      //   console.log("itinerary for current trip fetched");
       setItineraries(data.itineraries);
     } catch (error) {
       console.error("Failed to fetch itineraries:", error);
@@ -60,7 +60,7 @@ const FlightContainer = (props) => {
     const flightData =
       props.flight === "departure" ? departureFlightData : arrivalFlightData;
 
-    const {dictionaries} = flightData; 
+    const { dictionaries } = flightData;
 
     simplifiedFlightData = flightData.data.map((flight) => {
       let data = {};
@@ -84,7 +84,8 @@ const FlightContainer = (props) => {
         data.price = flight.price.total;
         data.duration = flight.itineraries[0].duration;
         data.flightType = `connecting: ${flight.itineraries[0].segments.length}-leg`;
-        data.flightCarrier = dictionaries.carriers[(flight.itineraries[0].segments[0].carrierCode)]
+        data.flightCarrier =
+          dictionaries.carriers[flight.itineraries[0].segments[0].carrierCode];
       } else if (flight.itineraries[0].segments.length === 1) {
         data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
         data.depDateTime = flight.itineraries[0].segments[0].departure.at;
@@ -99,9 +100,10 @@ const FlightContainer = (props) => {
         data.price = flight.price.total;
         data.duration = flight.itineraries[0].duration;
         data.flightType = "non-stop";
-        data.flightCarrier = dictionaries.carriers[(flight.itineraries[0].segments[0].carrierCode)]
+        data.flightCarrier =
+          dictionaries.carriers[flight.itineraries[0].segments[0].carrierCode];
       }
-    //   console.log(data);
+      //   console.log(data);
       return data;
     });
   }
@@ -158,10 +160,11 @@ const FlightContainer = (props) => {
       if (response.ok) {
         alert("Itinerary added successfully!");
         fetchCurrentItinerary();
-        // triggerUpdate();
-        // if (data && data.arrport) {
-        //   setDestinationInput(data.arrport);
-        // }
+        triggerUpdate();
+        if (props.onComplete) {
+          console.log("onComplete triggered");
+          props.onComplete();
+        }
       } else {
         alert(`Error: ${data.msg}`);
       }
@@ -290,7 +293,11 @@ const FlightContainer = (props) => {
                       flightType={flight.flightType}
                       isReturn={props.flight === "departure" ? false : true}
                       flightCarrier={flight.flightCarrier}
-                      onClick={props.flight === "departure" ? handleAddItinerary : handleAddReturnItinerary}
+                      onClick={
+                        props.flight === "departure"
+                          ? handleAddItinerary
+                          : handleAddReturnItinerary
+                      }
                       style={{
                         backgroundColor: "var(--main)",
                         borderRadius: "0 0 20px 20px",

@@ -14,55 +14,54 @@ const FlightDetailsInput = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
-
-    let originInput; 
+    let originInput;
     switch (origin.toLowerCase()) {
-        case 'singapore':
-            originInput = 'SIN';
-            break;
-        case 'tromsø':
-        case 'tromso':
-            originInput = 'TOS';
-            break;
-        case 'christchurch':
-            originInput = 'CHC';
-            break;
-        case 'sapporo':
-            originInput = 'CTS';
-            break;
-        case 'cairo':
-            originInput = 'CAI';
-            break;
-        default:
-            originInput = origin;
+      case "singapore":
+        originInput = "SIN";
+        break;
+      case "tromsø":
+      case "tromso":
+        originInput = "TOS";
+        break;
+      case "christchurch":
+        originInput = "CHC";
+        break;
+      case "sapporo":
+        originInput = "CTS";
+        break;
+      case "cairo":
+        originInput = "CAI";
+        break;
+      default:
+        originInput = origin;
     }
 
     let destinationInput;
     switch (destination.toLowerCase()) {
-        case 'singapore':
-            destinationInput = 'SIN';
-            break;
-        case 'tromsø':
-        case 'tromso':
-            destinationInput = 'TOS';
-            break;
-        case 'christchurch':
-            destinationInput = 'CHC';
-            break;
-        case 'sapporo':
-            destinationInput = 'CTS';
-            break;
-        case 'cairo':
-            destinationInput = 'CAI';
-            break;
-        default:
-            destinationInput = destination;
-    } 
+      case "singapore":
+        destinationInput = "SIN";
+        break;
+      case "tromsø":
+      case "tromso":
+        destinationInput = "TOS";
+        break;
+      case "christchurch":
+        destinationInput = "CHC";
+        break;
+      case "sapporo":
+        destinationInput = "CTS";
+        break;
+      case "cairo":
+        destinationInput = "CAI";
+        break;
+      default:
+        destinationInput = destination;
+    }
 
     event.preventDefault();
     console.log("Form submitted"); // Check if the form submission is detected
-    console.log('origin input: ', originInput);
-    console.log('destination input: ', destinationInput);
+    console.log("origin input: ", originInput);
+    console.log("destination input: ", destinationInput);
     // const departureUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${origin}&destination=${destination}&departureDate=${departureDate}&cabinClass=${cabinClass}`;
     // const arrivalUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${destination}&destination=${origin}&departureDate=${returnDate}&cabinClass=${cabinClass}`;
     const departureUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${originInput}&destination=${destinationInput}&departureDate=${departureDate}&cabinClass=${cabinClass}`;

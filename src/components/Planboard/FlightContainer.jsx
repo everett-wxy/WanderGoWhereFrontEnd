@@ -121,6 +121,7 @@ const FlightContainer = (props) => {
         alert("Itinerary added successfully!");
         fetchCurrentItinerary();
         triggerUpdate();
+        findItinerary(data.itineraryId)
         // if (data && data.arrport) {
         //   setDestinationInput(data.arrport);
         // }
@@ -161,6 +162,33 @@ const FlightContainer = (props) => {
       alert("Error deleting itinerary.");
     }
   };
+
+  const findItinerary = async (itineraryId) => {
+    try {
+        const response = await fetch(
+            `${
+                import.meta.env.VITE_SERVER
+            }/WanderGoWhere/trips/${id}/getOneItinerary`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ itineraryId }),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log("findItinerary: " , data);
+        return data 
+    } catch (error) {
+        console.error("Failed to fetch itineraries:", error);
+    }
+};
 
   const calculateDuration = (startDate, endDate) => {
     return duration(new Date(endDate), new Date(startDate));

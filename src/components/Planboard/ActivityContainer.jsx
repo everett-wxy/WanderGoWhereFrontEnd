@@ -10,12 +10,37 @@ const ActivityContainer = (props) => {
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [activitiesData, setActivitiesData] = useState([]);
   const [tripActivitiesData, setTripActivitiesData] = useState([]);
-  const [isSelectedBtn, setIsSelectedBtn] = useState(false);
+  const [destination, setDestination] = useState("");
   const { id } = useParams();
 
   //if tripActivitiesData.include activityId => btn = orange
 
-  const getActivitiesData = async () => {
+  const getTripData = async () => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/onetrip/" + id,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            authorization: "Bearer " + accessToken,
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("data error");
+      } else {
+        const data = await res.json();
+        setDestination(data.flights.city);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const getActivitiesData = async (query) => {
+    const flightDestination = query.includes("Sapporo");
+
     try {
       const res = await fetch(
         import.meta.env.VITE_SERVER + "/WanderGoWhere/activities",
@@ -139,6 +164,7 @@ const ActivityContainer = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      await getTripData();
       await getActivitiesData();
       await getTripActivitiesData();
     };

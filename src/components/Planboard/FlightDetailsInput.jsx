@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import styles from "./PlanBoard.module.css";
 import { FlightContext } from "../context/FlightContext";
+import LoadingSpinner from "./LoadingSpinner";
 
 const FlightDetailsInput = () => {
     const [origin, setOrigin] = useState("");
@@ -8,12 +9,16 @@ const FlightDetailsInput = () => {
     const [departureDate, setDepartureDate] = useState("");
     const [returnDate, setReturnDate] = useState("");
     const [cabinClass, setCabinClass] = useState("ECONOMY");
-    const { setDepartureFlightData, setArrivalFlightData } = useContext(FlightContext);
+    const { setDepartureFlightData, setArrivalFlightData } =
+        useContext(FlightContext);
+    const [ isLoading, setIsLoading ] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log("Form submitted"); // Check if the form submission is detected
         const departureUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${origin}&destination=${destination}&departureDate=${departureDate}&cabinClass=${cabinClass}`;
         const arrivalUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${destination}&destination=${origin}&departureDate=${returnDate}&cabinClass=${cabinClass}`;
+        setIsLoading(true)
         try {
             // Fetch both departure and arrival data in parallel
             const [departureResponse, arrivalResponse] = await Promise.all([
@@ -23,27 +28,32 @@ const FlightDetailsInput = () => {
 
             // Check if the response is OK before attempting to parse JSON
             if (!departureResponse.ok) {
-                throw new Error(`Failed to fetch departure data, status: ${departureResponse.status}`);
+                throw new Error(
+                    `Failed to fetch departure data, status: ${departureResponse.status}`
+                );
             }
             if (!arrivalResponse.ok) {
-                throw new Error(`Failed to fetch arrival data, status: ${arrivalResponse.status}`);
+                throw new Error(
+                    `Failed to fetch arrival data, status: ${arrivalResponse.status}`
+                );
             }
 
             const departureFlightData = await departureResponse.json();
             const arrivalFlightData = await arrivalResponse.json();
-            
             setDepartureFlightData(departureFlightData);
-
             setArrivalFlightData(arrivalFlightData);
+            setIsLoading(false);
 
         } catch (error) {
             console.error("Error fetching flight data:", error);
+            setIsLoading(false);
         }
     };
 
     return (
         <div className={styles.flightdetailsinput}>
             <h1>Flight Search</h1>
+            {isLoading? <LoadingSpinner/> : null}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Origin:</label>

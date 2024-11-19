@@ -5,7 +5,7 @@ const AccomCard = (props) => {
   return (
     <div className={styles.flightcard}>
       <div className={styles.imgwrapper}>
-        <img className={styles.hotelimg} src={props.hotelImg} />
+        <img className={styles.hotelimg} src={props.hotelImg} alt={hotelName} />
       </div>
       <div
         style={{ paddingLeft: "20px", marginTop: "-5px", textAlign: "left" }}
@@ -20,7 +20,7 @@ const AccomCard = (props) => {
       <div className={styles.accombtndiv}>
         <button
           className={styles.accombtn}
-          style={{ backgroundColor: "var(--main)" }}
+          style={props.btnStyle}
           onClick={props.onClick}
         >
           {props.btnMsg}

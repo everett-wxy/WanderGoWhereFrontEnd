@@ -2,13 +2,14 @@ import React from "react";
 import styles from "./LandingPage.module.css";
 import SearchBar from "./SearchBar";
 import Carousel from "./Carousel";
+import { TypeAnimation } from "react-type-animation";
 
 const LandingPage = () => {
   return (
     <div className={styles.landingpage}>
       <div
         style={{
-          marginTop: "300px",
+          marginTop: "275px",
         }}
       ></div>
       <div
@@ -30,8 +31,29 @@ const LandingPage = () => {
           >
             WANDER GO WHERE?
           </h1>
-          <p style={{ color: "white" }}>Your next destination, within budget</p>
-          <button style={{ borderRadius: 0 }}>Find out more</button>
+          <div style={{ height: "180px" }}>
+            <TypeAnimation
+              sequence={["Your next destination, within budget", 1000]}
+              wrapper="span"
+              speed={30}
+              style={{
+                fontSize: "40px",
+                color: "white",
+                display: "inline-block",
+              }}
+              repeat={Infinity}
+            />
+          </div>
+          <button
+            style={{
+              borderRadius: "20px",
+              width: "50%",
+              height: "90px",
+              fontSize: "26px",
+            }}
+          >
+            Find out more
+          </button>
         </div>
         <Carousel />
       </div>

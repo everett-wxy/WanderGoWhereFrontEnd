@@ -77,7 +77,6 @@
   z-index: 1;
   display: grid;
   grid-template-rows: 15% 85%;
-  text-align: center;
 }
 
 .flightctnrcomponent {

@@ -135,7 +135,13 @@ const BudgetBar = (props) => {
             className={styles.budgetinputdiv}
             onClick={() => setIsUpdate(true)}
           >
-            <h3>{budget}</h3>
+            <h3>
+              {" "}
+              <span style={{ color: "var(--submain)" }}>
+                {foodBudget + hotelBudget + activityBudget + flightBudget}
+              </span>{" "}
+              / {budget}
+            </h3>
           </div>
         ) : (
           <div className={styles.budgetinputdiv}>

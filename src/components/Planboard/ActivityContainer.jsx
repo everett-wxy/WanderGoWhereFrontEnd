@@ -114,6 +114,10 @@ const ActivityContainer = (props) => {
         console.log("SUCCESS");
         await getTripActivitiesData();
         triggerUpdate();
+        if (props.onComplete) {
+          console.log("onComplete triggered");
+          props.onComplete();
+        }
       }
     } catch (error) {
       console.error("Error in addActivitiesToTrip:", error.message);

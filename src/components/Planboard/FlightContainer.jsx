@@ -62,50 +62,58 @@ const FlightContainer = (props) => {
 
     const { dictionaries } = flightData;
 
-    simplifiedFlightData = flightData.data.map((flight) => {
-      let data = {};
-      if (flight.itineraries[0].segments.length > 1) {
-        data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
-        data.depDateTime = flight.itineraries[0].segments[0].departure.at;
-        const [depDate, depTime] = data.depDateTime.split("T");
-        data.depDate = depDate;
-        data.depTime = depTime;
-        data.arrPort =
-          flight.itineraries[0].segments[
-            flight.itineraries[0].segments.length - 1
-          ].arrival.iataCode;
-        data.arrDateTime =
-          flight.itineraries[0].segments[
-            flight.itineraries[0].segments.length - 1
-          ].arrival.at;
-        const [arrDate, arrTime] = data.arrDateTime.split("T");
-        data.arrDate = arrDate;
-        data.arrTime = arrTime;
-        data.price = flight.price.total;
-        data.duration = flight.itineraries[0].duration;
-        data.flightType = `connecting: ${flight.itineraries[0].segments.length}-leg`;
-        data.flightCarrier =
-          dictionaries.carriers[flight.itineraries[0].segments[0].carrierCode];
-      } else if (flight.itineraries[0].segments.length === 1) {
-        data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
-        data.depDateTime = flight.itineraries[0].segments[0].departure.at;
-        const [depDate, depTime] = data.depDateTime.split("T");
-        data.depDate = depDate;
-        data.depTime = depTime;
-        data.arrPort = flight.itineraries[0].segments[0].arrival.iataCode;
-        data.arrDateTime = flight.itineraries[0].segments[0].arrival.at;
-        const [arrDate, arrTime] = data.arrDateTime.split("T");
-        data.arrDate = arrDate;
-        data.arrTime = arrTime;
-        data.price = flight.price.total;
-        data.duration = flight.itineraries[0].duration;
-        data.flightType = "non-stop";
-        data.flightCarrier =
-          dictionaries.carriers[flight.itineraries[0].segments[0].carrierCode];
-      }
-      //   console.log(data);
-      return data;
-    });
+    if (flightData && flightData.data && Array.isArray(flightData.data)) {
+      simplifiedFlightData = flightData.data.map((flight) => {
+        let data = {};
+        if (flight.itineraries[0].segments.length > 1) {
+          data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
+          data.depDateTime = flight.itineraries[0].segments[0].departure.at;
+          const [depDate, depTime] = data.depDateTime.split("T");
+          data.depDate = depDate;
+          data.depTime = depTime;
+          data.arrPort =
+            flight.itineraries[0].segments[
+              flight.itineraries[0].segments.length - 1
+            ].arrival.iataCode;
+          data.arrDateTime =
+            flight.itineraries[0].segments[
+              flight.itineraries[0].segments.length - 1
+            ].arrival.at;
+          const [arrDate, arrTime] = data.arrDateTime.split("T");
+          data.arrDate = arrDate;
+          data.arrTime = arrTime;
+          data.price = flight.price.total;
+          data.duration = flight.itineraries[0].duration;
+          data.flightType = `connecting: ${flight.itineraries[0].segments.length}-leg`;
+          data.flightCarrier =
+            dictionaries.carriers[
+              flight.itineraries[0].segments[0].carrierCode
+            ];
+        } else if (flight.itineraries[0].segments.length === 1) {
+          data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
+          data.depDateTime = flight.itineraries[0].segments[0].departure.at;
+          const [depDate, depTime] = data.depDateTime.split("T");
+          data.depDate = depDate;
+          data.depTime = depTime;
+          data.arrPort = flight.itineraries[0].segments[0].arrival.iataCode;
+          data.arrDateTime = flight.itineraries[0].segments[0].arrival.at;
+          const [arrDate, arrTime] = data.arrDateTime.split("T");
+          data.arrDate = arrDate;
+          data.arrTime = arrTime;
+          data.price = flight.price.total;
+          data.duration = flight.itineraries[0].duration;
+          data.flightType = "non-stop";
+          data.flightCarrier =
+            dictionaries.carriers[
+              flight.itineraries[0].segments[0].carrierCode
+            ];
+        }
+        //   console.log(data);
+        return data;
+      });
+    } else {
+      console.error("Flight data is undefined or has no data property");
+    }
   }
 
   const handleAddItinerary = async (itinerary) => {

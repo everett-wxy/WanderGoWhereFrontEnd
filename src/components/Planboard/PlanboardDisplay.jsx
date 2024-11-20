@@ -11,6 +11,9 @@ const PlanboardDisplay = () => {
   const nextStep = () => setCurrentStep((prevStep) => prevStep + 1);
   return (
     <div className={styles.planboarddisplay}>
+
+
+
       <FlightContainer
         message="Select a Departure Flight"
         flight="departure"

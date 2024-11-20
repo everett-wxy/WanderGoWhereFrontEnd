@@ -232,7 +232,7 @@ const AccomContainer = (props) => {
                   handleAddAccomsToTrip(accom._id);
                 }}
                 btnMsg="+"
-                style={{ backgroundColor: "var(--main)" }}
+                btnStyle={{ backgroundColor: "var(--main)" }}
               />
             );
           })}
@@ -249,7 +249,7 @@ const AccomContainer = (props) => {
             hotelName={selectedAccomsData[0].hotelName}
             onClick={() => handleDelAccomsFromTrip(tripAccomsIdData)}
             btnMsg="Selected"
-            style={{ backgroundColor: "orangered" }}
+            btnStyle={{ backgroundColor: "orangered" }}
           />
         </div>
       ) : (

@@ -31,7 +31,7 @@ const ActivityContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
-        setTripDestination(data.itineraries[0].arrPort);
+        setTripDestination(data.itineraries[0]?.arrPort);
       }
     } catch (error) {
       console.error(error.message);
@@ -199,6 +199,17 @@ const ActivityContainer = (props) => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("Updated trip destination:", tripDestination);
+      if (tripDestination) {
+        await getActivitiesData(tripDestination);
+        await getTripActivitiesData();
+      }
+    };
+    fetchData();
+  }, [tripDestination]);
 
   return (
     <div className={styles.flightcontainer}>

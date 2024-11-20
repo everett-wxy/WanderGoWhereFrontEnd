@@ -8,10 +8,31 @@ import { useNavigate, useParams } from "react-router-dom";
 const TripCardDisplay = (props) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [activity, setActivity] = useState([]);
-  const [food, setFood] = useState([]);
   const { accessToken } = useContext(UserContext);
   const [tripsData, setTripsData] = useState([]);
+
+  const imagestray = [
+    {
+      url: "https://cdn.midjourney.com/84b73cc6-b31d-4ba3-82f6-ca1bfbc3608f/0_2.png",
+      country: "Norway, Tromso",
+    },
+    {
+      url: "https://cdn.midjourney.com/9f50d26d-42ee-41b4-b934-12225f98843a/0_3.png",
+      title: "Japan, Sapporo",
+    },
+    {
+      url: "https://cdn.midjourney.com/aba2e0b3-2bcb-4e4e-b928-eb0499dde040/0_3.png",
+      title: "Egypt, Cairo",
+    },
+    {
+      url: "https://cdn.midjourney.com/8867e8d0-d6fc-4aa7-9449-45a344173e45/0_3.png",
+      title: "Turkey, Istanbul",
+    },
+    {
+      url: "https://cdn.midjourney.com/c548e6d4-e23b-46b8-bb04-f76c8f0648cd/0_2.png",
+      title: "New Zealand, Christchurch",
+    },
+  ];
 
   const getUserTrip = async () => {
     try {
@@ -104,10 +125,26 @@ const TripCardDisplay = (props) => {
             tripname={trip.name}
             destination={
               Array.isArray(trip.itineraries) && trip.itineraries.length > 0
-                ? trip.itineraries.map(
-                    (itinerary) => itinerary.arrPort || "Select a city"
-                  )
+                ? (trip.itineraries[0]?.arrPort === "TOS" && "Tromso") ||
+                  (trip.itineraries[0]?.arrPort === "CTS" && "Sapporo") ||
+                  (trip.itineraries[0]?.arrPort === "CHC" && "Christchurch") ||
+                  (trip.itineraries[0]?.arrPort === "IST" && "Istanbul") ||
+                  (trip.itineraries[0]?.arrPort === "CAI" && "Cairo") ||
+                  "Select a city"
                 : "Select a city"
+            }
+            destinationImg={
+              Array.isArray(trip.itineraries) && trip.itineraries.length > 0
+                ? (trip.itineraries[0]?.arrPort === "TOS" &&
+                    imagestray[0].url) ||
+                  (trip.itineraries[0]?.arrPort === "CTS" &&
+                    imagestray[1].url) ||
+                  (trip.itineraries[0]?.arrPort === "CHC" &&
+                    imagestray[4].url) ||
+                  (trip.itineraries[0]?.arrPort === "IST" &&
+                    imagestray[3].url) ||
+                  (trip.itineraries[0]?.arrPort === "CAI" && imagestray[2].url)
+                : "https://cdn.midjourney.com/611ba752-f809-4bbb-af71-a0524fc92ba1/0_2.png"
             }
             flighttix={trip.itineraries.length}
             accom={trip.accoms.length}
@@ -115,30 +152,22 @@ const TripCardDisplay = (props) => {
             food={trip.restaurants.length}
             departuredate={
               Array.isArray(trip.itineraries) && trip.itineraries.length > 0
-                ? trip.itineraries.map(
-                    (itinerary) => itinerary.depDate || "Departure Date"
-                  )
+                ? trip.itineraries[0]?.depDate || "Departure Date"
                 : "Departure Date"
             }
             departuretime={
               Array.isArray(trip.itineraries) && trip.itineraries.length > 0
-                ? trip.itineraries.map(
-                    (itinerary) => itinerary.depTime || "Departure Time"
-                  )
+                ? trip.itineraries[0]?.depTime || "Departure Time"
                 : "Departure Date"
             }
             returningdate={
               Array.isArray(trip.itineraries) && trip.itineraries.length > 0
-                ? trip.itineraries.map(
-                    (itinerary) => itinerary.arrDate || "Arrival Date"
-                  )
+                ? trip.itineraries[1]?.arrDate || "Arrival Date"
                 : "Arrival Date"
             }
             returningtime={
               Array.isArray(trip.itineraries) && trip.itineraries.length > 0
-                ? trip.itineraries.map(
-                    (itinerary) => itinerary.arrTime || "Arrival Time"
-                  )
+                ? trip.itineraries[1]?.arrTime || "Arrival Time"
                 : "Arrival Time"
             }
             budget={trip.budget}

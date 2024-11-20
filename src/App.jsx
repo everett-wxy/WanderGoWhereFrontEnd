@@ -41,7 +41,7 @@ function App() {
             setAccessToken={setAccessToken}
           />
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage signupFn={() => setShowSignupModal(true)}/>} />
             {accessToken.length > 0 && (
               <>
                 <Route path="/dashboard" element={<Dashboard />} />

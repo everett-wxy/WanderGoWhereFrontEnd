@@ -4,17 +4,38 @@ import styles from "./Accomboard.module.css";
 import ActivityCard from "./ActivityCard";
 import { useParams } from "react-router-dom";
 import RestaurantCard from "./RestaurantCard";
+import { TripContext } from "../context/TripContext";
 
 const RestaurantsContainer = (props) => {
   const { accessToken, setAccessToken } = useContext(UserContext);
+  const { triggerUpdate, destinationInput } = useContext(TripContext);
   const [restaurantsData, setRestaurantsData] = useState([]);
   const [tripRestaurantsData, setTripRestaurantsData] = useState([]);
-  const [isSelectedBtn, setIsSelectedBtn] = useState(false);
   const { id } = useParams();
 
   // if tripRestaurantData.includes restaurantId => btn = orange
 
-  const getRestaurantsData = async () => {
+  const getRestaurantsData = async (destinationInput) => {
+    let city = destinationInput;
+
+    if (city === "IST") {
+      city = "Istanbul, Turkey";
+    }
+    if (city === "CHC") {
+      city = "Christchurch, New Zealand";
+    }
+    if (city === "CTS") {
+      city = "Sapporo, Hokkaido, Japan";
+    }
+    if (city === "TOS") {
+      city = "Tromso, Norway";
+    }
+    if (city === "CAI") {
+      city = "Cairo, Egypt";
+    }
+
+    console.log("City being sent:", city);
+
     try {
       const res = await fetch(
         import.meta.env.VITE_SERVER + "/WanderGoWhere/restaurants",
@@ -24,7 +45,7 @@ const RestaurantsContainer = (props) => {
             "Content-type": "application/json",
           },
           body: JSON.stringify({
-            city: "Sapporo, Hokkaido, Japan", // sample - fix for inputs.
+            city,
           }),
         }
       );
@@ -75,6 +96,7 @@ const RestaurantsContainer = (props) => {
       } else {
         const data = await res.json();
         console.log("SUCCESS");
+        triggerUpdate();
         await getTripRestaurantsData();
       }
     } catch (error) {
@@ -104,6 +126,7 @@ const RestaurantsContainer = (props) => {
       } else {
         const data = await res.json();
         console.log("SUCCESSSFULLT DELETED");
+        triggerUpdate();
         await getTripRestaurantsData();
       }
     } catch (error) {
@@ -137,12 +160,20 @@ const RestaurantsContainer = (props) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getRestaurantsData();
-      await getTripRestaurantsData();
-    };
-    fetchData();
-  }, []);
+    if (destinationInput) {
+      const fetchData = async () => {
+        await getRestaurantsData(destinationInput);
+        await getTripRestaurantsData();
+      };
+      fetchData();
+    }
+  }, [destinationInput]);
+
+  useEffect(() => {
+    if (destinationInput) {
+      getRestaurantsData(destinationInput);
+    }
+  }, [destinationInput]);
 
   useEffect(() => {
     console.log("Updated tripRestaurantsData:", tripRestaurantsData);

@@ -36,7 +36,25 @@ const ActivityContainer = (props) => {
     }
   };
 
-  const getActivitiesData = async (query) => {
+  const getActivitiesData = async (destinationInput) => {
+    let city = destinationInput;
+
+    if (city === "IST") {
+      city = "Istanbul, Turkey";
+    }
+    if (city === "CHC") {
+      city = "Christchurch, New Zealand";
+    }
+    if (city === "CTS") {
+      city = "Sapporo, Hokkaido, Japan";
+    }
+    if (city === "TOS") {
+      city = "Tromso, Norway";
+    }
+    if (city === "CAI") {
+      city = "Cairo, Egypt";
+    }
+
     try {
       const res = await fetch(
         import.meta.env.VITE_SERVER + "/WanderGoWhere/activities",
@@ -46,7 +64,7 @@ const ActivityContainer = (props) => {
             "Content-type": "application/json",
           },
           body: JSON.stringify({
-            city: query, //sample - fix for inputs.
+            city: city, //sample - fix for inputs.
           }),
         }
       );
@@ -96,6 +114,10 @@ const ActivityContainer = (props) => {
         console.log("SUCCESS");
         await getTripActivitiesData();
         triggerUpdate();
+        if (props.onComplete) {
+          console.log("onComplete triggered");
+          props.onComplete();
+        }
       }
     } catch (error) {
       console.error("Error in addActivitiesToTrip:", error.message);
@@ -161,11 +183,11 @@ const ActivityContainer = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       await getTripData();
-      await getActivitiesData("Cairo, Egypt");
+      await getActivitiesData(destinationInput);
       await getTripActivitiesData();
     };
     fetchData();
-  }, []);
+  }, [destinationInput]);
 
   useEffect(() => {
     console.log("Updated tripActivitiesData:", tripActivitiesData);

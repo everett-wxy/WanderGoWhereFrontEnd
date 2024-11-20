@@ -82,7 +82,7 @@
 .flightctnrcomponent {
   background-color: var(--main);
   color: white;
-  height: 100%;
+  height: 50px;
 }
 
 .flightcardbox {

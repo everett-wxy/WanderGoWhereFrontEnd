@@ -9,7 +9,7 @@ import { differenceInDays } from "date-fns";
 
 const FlightContainer = (props) => {
   const { id } = useParams();
-  const { triggerUpdate, setDestinationInput } = useContext(TripContext);
+  const { triggerUpdate, triggerInputUpdate } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const { departureFlightData, arrivalFlightData } = useContext(FlightContext);
   const [itineraries, setItineraries] = useState([]);
@@ -31,7 +31,7 @@ const FlightContainer = (props) => {
         throw new Error(`Error: ${response.statusText}`);
       }
       const data = await response.json();
-    //   console.log("itinerary for current trip fetched");
+      //   console.log("itinerary for current trip fetched");
       setItineraries(data.itineraries);
     } catch (error) {
       console.error("Failed to fetch itineraries:", error);
@@ -60,50 +60,60 @@ const FlightContainer = (props) => {
     const flightData =
       props.flight === "departure" ? departureFlightData : arrivalFlightData;
 
-    const {dictionaries} = flightData; 
+    const { dictionaries } = flightData;
 
-    simplifiedFlightData = flightData.data.map((flight) => {
-      let data = {};
-      if (flight.itineraries[0].segments.length > 1) {
-        data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
-        data.depDateTime = flight.itineraries[0].segments[0].departure.at;
-        const [depDate, depTime] = data.depDateTime.split("T");
-        data.depDate = depDate;
-        data.depTime = depTime;
-        data.arrPort =
-          flight.itineraries[0].segments[
-            flight.itineraries[0].segments.length - 1
-          ].arrival.iataCode;
-        data.arrDateTime =
-          flight.itineraries[0].segments[
-            flight.itineraries[0].segments.length - 1
-          ].arrival.at;
-        const [arrDate, arrTime] = data.arrDateTime.split("T");
-        data.arrDate = arrDate;
-        data.arrTime = arrTime;
-        data.price = flight.price.total;
-        data.duration = flight.itineraries[0].duration;
-        data.flightType = `connecting: ${flight.itineraries[0].segments.length}-leg`;
-        data.flightCarrier = dictionaries.carriers[(flight.itineraries[0].segments[0].carrierCode)]
-      } else if (flight.itineraries[0].segments.length === 1) {
-        data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
-        data.depDateTime = flight.itineraries[0].segments[0].departure.at;
-        const [depDate, depTime] = data.depDateTime.split("T");
-        data.depDate = depDate;
-        data.depTime = depTime;
-        data.arrPort = flight.itineraries[0].segments[0].arrival.iataCode;
-        data.arrDateTime = flight.itineraries[0].segments[0].arrival.at;
-        const [arrDate, arrTime] = data.arrDateTime.split("T");
-        data.arrDate = arrDate;
-        data.arrTime = arrTime;
-        data.price = flight.price.total;
-        data.duration = flight.itineraries[0].duration;
-        data.flightType = "non-stop";
-        data.flightCarrier = dictionaries.carriers[(flight.itineraries[0].segments[0].carrierCode)]
-      }
-    //   console.log(data);
-      return data;
-    });
+    if (flightData && flightData.data && Array.isArray(flightData.data)) {
+      simplifiedFlightData = flightData.data.map((flight) => {
+        let data = {};
+        if (flight.itineraries[0].segments.length > 1) {
+          data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
+          data.depDateTime = flight.itineraries[0].segments[0].departure.at;
+          const [depDate, depTime] = data.depDateTime.split("T");
+          data.depDate = depDate;
+          data.depTime = depTime;
+          data.arrPort =
+            flight.itineraries[0].segments[
+              flight.itineraries[0].segments.length - 1
+            ].arrival.iataCode;
+          data.arrDateTime =
+            flight.itineraries[0].segments[
+              flight.itineraries[0].segments.length - 1
+            ].arrival.at;
+          const [arrDate, arrTime] = data.arrDateTime.split("T");
+          data.arrDate = arrDate;
+          data.arrTime = arrTime;
+          data.price = flight.price.total;
+          data.duration = flight.itineraries[0].duration;
+          data.flightType = `connecting: ${flight.itineraries[0].segments.length}-leg`;
+          data.flightCarrier =
+            dictionaries.carriers[
+              flight.itineraries[0].segments[0].carrierCode
+            ];
+        } else if (flight.itineraries[0].segments.length === 1) {
+          data.depPort = flight.itineraries[0].segments[0].departure.iataCode;
+          data.depDateTime = flight.itineraries[0].segments[0].departure.at;
+          const [depDate, depTime] = data.depDateTime.split("T");
+          data.depDate = depDate;
+          data.depTime = depTime;
+          data.arrPort = flight.itineraries[0].segments[0].arrival.iataCode;
+          data.arrDateTime = flight.itineraries[0].segments[0].arrival.at;
+          const [arrDate, arrTime] = data.arrDateTime.split("T");
+          data.arrDate = arrDate;
+          data.arrTime = arrTime;
+          data.price = flight.price.total;
+          data.duration = flight.itineraries[0].duration;
+          data.flightType = "non-stop";
+          data.flightCarrier =
+            dictionaries.carriers[
+              flight.itineraries[0].segments[0].carrierCode
+            ];
+        }
+        //   console.log(data);
+        return data;
+      });
+    } else {
+      console.error("Flight data is undefined or has no data property");
+    }
   }
 
   const handleAddItinerary = async (itinerary) => {
@@ -125,10 +135,12 @@ const FlightContainer = (props) => {
         alert("Itinerary added successfully!");
         fetchCurrentItinerary();
         triggerUpdate();
-        findItinerary(data.itineraryId)
-        // if (data && data.arrport) {
-        //   setDestinationInput(data.arrport);
-        // }
+        findItinerary(data.itineraryId);
+
+        if (props.onComplete) {
+          console.log("onComplete triggered");
+          props.onComplete();
+        }
       } else {
         alert(`Error: ${data.msg}`);
       }
@@ -156,10 +168,11 @@ const FlightContainer = (props) => {
       if (response.ok) {
         alert("Itinerary added successfully!");
         fetchCurrentItinerary();
-        // triggerUpdate();
-        // if (data && data.arrport) {
-        //   setDestinationInput(data.arrport);
-        // }
+        triggerUpdate();
+        if (props.onComplete) {
+          console.log("onComplete triggered");
+          props.onComplete();
+        }
       } else {
         alert(`Error: ${data.msg}`);
       }
@@ -187,8 +200,8 @@ const FlightContainer = (props) => {
         alert("Itinerary deleted successfully!");
 
         fetchCurrentItinerary();
-        setDestinationInput("");
         triggerUpdate();
+        triggerInputUpdate("");
       } else {
         alert(`Error: ${data.msg}`);
       }
@@ -200,44 +213,32 @@ const FlightContainer = (props) => {
 
   const findItinerary = async (itineraryId) => {
     try {
-        const response = await fetch(
-            `${
-                import.meta.env.VITE_SERVER
-            }/WanderGoWhere/trips/${id}/getOneItinerary`,
-            {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ itineraryId }),
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_SERVER
+        }/WanderGoWhere/trips/${id}/getOneItinerary`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ itineraryId }),
         }
-        const data = await response.json();
-        console.log("findItinerary: " , data);
-        return data 
-    } catch (error) {
-        console.error("Failed to fetch itineraries:", error);
-    }
-};
+      );
 
-  const calculateDuration = (startDate, endDate) => {
-    return duration(new Date(endDate), new Date(startDate));
-  };
-
-  const handleSelection = async (flightData) => {
-    try {
-      handleAddItinerary();
-      console.log(`Selected ${flight} flight:`, flightData);
-      if (onComplete) {
-        onComplete();
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
       }
+      const data = await response.json();
+      console.log("findItinerary: ", data);
+      if (data && data.itinerary && data.itinerary.arrPort) {
+        console.log("Triggering input update with: ", data.itinerary.arrPort);
+        triggerInputUpdate(data.itinerary.arrPort);
+      }
+      return data;
     } catch (error) {
-      console.error("Selection error", error);
+      console.error("Failed to fetch itineraries:", error);
     }
   };
 
@@ -300,7 +301,11 @@ const FlightContainer = (props) => {
                       flightType={flight.flightType}
                       isReturn={props.flight === "departure" ? false : true}
                       flightCarrier={flight.flightCarrier}
-                      onClick={props.flight === "departure" ? handleAddItinerary : handleAddReturnItinerary}
+                      onClick={
+                        props.flight === "departure"
+                          ? handleAddItinerary
+                          : handleAddReturnItinerary
+                      }
                       style={{
                         backgroundColor: "var(--main)",
                         borderRadius: "0 0 20px 20px",

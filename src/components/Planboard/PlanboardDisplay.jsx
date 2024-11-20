@@ -11,35 +11,37 @@ const PlanboardDisplay = () => {
   const nextStep = () => setCurrentStep((prevStep) => prevStep + 1);
   return (
     <div className={styles.planboarddisplay}>
-      {/* {currentStep === 1 && ( */}
-        <FlightContainer
-          message="Select a Departure Flight"
-          flight="departure"
-          onComplete={nextStep}
-        />
-      {/* )} */}
-      {/* {currentStep === 2 && ( */}
+
+
+
+      <FlightContainer
+        message="Select a Departure Flight"
+        flight="departure"
+        onComplete={nextStep}
+      />
+
+      {currentStep >= 2 && (
         <FlightContainer
           message="Select a Returning Flight"
           flight="return"
           onComplete={nextStep}
         />
-      {/* )} */}
-      {/* {currentStep === 3 && ( */}
+      )}
+      {currentStep >= 3 && (
         <AccomContainer
           message="Select an Accommodation"
           onComplete={nextStep}
         />
-      {/* )} */}
-      {/* {currentStep === 4 && ( */}
+      )}
+      {currentStep >= 4 && (
         <ActivityContainer message="Select Activities" onComplete={nextStep} />
-      {/* )} */}
-      {/* {currentStep === 5 && ( */}
+      )}
+      {currentStep >= 5 && (
         <RestaurantsContainer
           message="Select Restaurants"
           onComplete={nextStep}
         />
-      {/* )} */}
+      )}
     </div>
   );
 };

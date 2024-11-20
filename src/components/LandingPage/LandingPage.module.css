@@ -52,6 +52,15 @@
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.5),
+      rgba(230, 230, 230, 0.453)
+    ),
+    /* Gradient overlay */
+      url("https://cdn.midjourney.com/da4cecd4-636a-44af-8931-c9ba5e7b331a/0_3.png");
+  /* background-image: url("https://cdn.midjourney.com/da4cecd4-636a-44af-8931-c9ba5e7b331a/0_2.png"); */
+  background-size: cover;
 }
 
 .carouselcontainer img {
@@ -65,3 +74,8 @@
   background-color: white;
 }
 /* inbuilt library class is in global style file */
+
+.stuff {
+  display: grid;
+  grid-template-columns: repeat(3, 30%);
+}

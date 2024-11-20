@@ -3,11 +3,13 @@ import styles from "./Budgetbar.module.css";
 import { useParams } from "react-router-dom";
 import UserContext from "../context/user";
 import { TripContext } from "../context/TripContext";
+import { differenceInDays } from "date-fns";
 
 const BudgetBar = (props) => {
   const { update } = useContext(TripContext);
   const { accessToken, setAccessToken } = useContext(UserContext);
   const [budget, setBudget] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [flightBudget, setFlightBudget] = useState(0);
   const [hotelBudget, setHotelBudget] = useState(0);
   const [activityBudget, setActivityBudget] = useState(0);
@@ -15,6 +17,10 @@ const BudgetBar = (props) => {
   const [isUpdate, setIsUpdate] = useState(false);
 
   const { id } = useParams();
+
+  const calculateDuration = (startDate, endDate) => {
+    return differenceInDays(new Date(endDate), new Date(startDate));
+  };
 
   const getOneTrip = async () => {
     try {
@@ -34,13 +40,22 @@ const BudgetBar = (props) => {
         const data = await res.json();
         setBudget(data.budget); //ID always return in array!!!!
 
+        if (data.itineraries[1]) {
+          setDuration(
+            calculateDuration(
+              data.itineraries[0].depDate,
+              data.itineraries[1].arrDate
+            )
+          );
+        }
+
         const totalFlightBudget = data.itineraries.reduce((sum, flight) => {
           return sum + flight.price;
         }, 0);
         setFlightBudget(totalFlightBudget);
 
         const totalHotelBudget = data.accoms.reduce((sum, accom) => {
-          return (sum + accom.hotelPrice) * data.days;
+          return (sum + accom.hotelPrice) * duration;
         }, 0);
 
         setHotelBudget(totalHotelBudget);
@@ -79,7 +94,7 @@ const BudgetBar = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
-        getOneTripBudget();
+        getOneTrip();
         console.log("budget updated");
       }
     } catch (error) {
@@ -120,7 +135,13 @@ const BudgetBar = (props) => {
             className={styles.budgetinputdiv}
             onClick={() => setIsUpdate(true)}
           >
-            <h3>{budget}</h3>
+            <h3>
+              {" "}
+              <span style={{ color: "var(--submain)" }}>
+                {foodBudget + hotelBudget + activityBudget + flightBudget}
+              </span>{" "}
+              / {budget}
+            </h3>
           </div>
         ) : (
           <div className={styles.budgetinputdiv}>

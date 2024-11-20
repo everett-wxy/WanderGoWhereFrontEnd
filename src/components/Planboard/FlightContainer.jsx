@@ -14,6 +14,7 @@ const FlightContainer = (props) => {
   const { departureFlightData, arrivalFlightData } = useContext(FlightContext);
   const [itineraries, setItineraries] = useState([]);
   let message = `${props.flight} flight`;
+    message = message.charAt(0).toUpperCase() + message.slice(1);
 
   const fetchCurrentItinerary = async () => {
     try {
@@ -132,7 +133,6 @@ const FlightContainer = (props) => {
       );
       const data = await response.json();
       if (response.ok) {
-        // alert("Itinerary added successfully!");
         fetchCurrentItinerary();
         triggerUpdate();
         findItinerary(data.itineraryId);
@@ -216,7 +216,6 @@ const FlightContainer = (props) => {
       );
       const data = await response.json();
       if (response.ok) {
-        // alert("Itinerary deleted successfully!");
         toast.success("🗑️ Flight removed.");
         fetchCurrentItinerary();
         triggerUpdate();
@@ -277,7 +276,7 @@ const FlightContainer = (props) => {
               padding: "15px 0 0 50px",
             }}
           >
-            <h6>{message}</h6>
+            <h6>{displayedItinerary.length > 0? message: props.message}</h6>
           </div>
           <div className={styles.flightcardbox}>
             {displayedItinerary.length > 0

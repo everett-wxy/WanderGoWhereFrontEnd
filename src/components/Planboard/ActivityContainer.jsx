@@ -7,7 +7,7 @@ import { TripContext } from "../context/TripContext";
 
 const ActivityContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
-  const { accessToken} = useContext(UserContext);
+  const { accessToken } = useContext(UserContext);
   const [activitiesData, setActivitiesData] = useState([]);
   const [tripActivitiesData, setTripActivitiesData] = useState([]);
   const { id } = useParams();

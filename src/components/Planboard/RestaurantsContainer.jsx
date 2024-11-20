@@ -5,6 +5,8 @@ import ActivityCard from "./ActivityCard";
 import { useParams } from "react-router-dom";
 import RestaurantCard from "./RestaurantCard";
 import { TripContext } from "../context/TripContext";
+import { toast } from "react-toastify";
+
 
 const RestaurantsContainer = (props) => {
   const { accessToken } = useContext(UserContext);
@@ -115,6 +117,8 @@ const RestaurantsContainer = (props) => {
         const data = await res.json();
         triggerUpdate();
         await getTripRestaurantsData();
+        toast.success("🍝 Restaurant added.");
+
       }
     } catch (error) {
       console.error("Error in addRestaurantsToTrip:", error.message);
@@ -144,6 +148,7 @@ const RestaurantsContainer = (props) => {
         const data = await res.json();
         triggerUpdate();
         await getTripRestaurantsData();
+        toast.success("🗑️ Restaurant removed.");
       }
     } catch (error) {
       console.error(error.mesaage);
@@ -228,6 +233,7 @@ const RestaurantsContainer = (props) => {
               price={item.foodPrice}
               restaurant={item.restaurant}
               tier={item.tier}
+              details={item.foodDescription}
               onClick={() => {
                 if (isSelected) {
                   delRestaurantsFromTrip(item._id);

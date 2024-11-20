@@ -46,15 +46,6 @@ const FlightCard = (props) => {
           <p style={{ marginTop: "-15px" }}>{props.arrtime}</p>
         </div>
       </div>
-      <p
-        style={{
-          color: "var(--submain)",
-          fontWeight: "bolder",
-          justifySelf: "center",
-        }}
-      >
-        {props.class}
-      </p>
       <div style={{ height: "15px" }}></div>
       <div className={styles.cardgrid}>
         <div

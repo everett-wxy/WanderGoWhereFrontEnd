@@ -4,6 +4,7 @@ import styles from "./Accomboard.module.css";
 import ActivityCard from "./ActivityCard";
 import { useParams } from "react-router-dom";
 import { TripContext } from "../context/TripContext";
+import { toast } from "react-toastify";
 
 const ActivityContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
@@ -113,6 +114,7 @@ const ActivityContainer = (props) => {
         const data = await res.json();
         await getTripActivitiesData();
         triggerUpdate();
+        toast.success("💃🏼 Activities added.");
         if (props.onComplete) {
           props.onComplete();
         }
@@ -146,6 +148,7 @@ const ActivityContainer = (props) => {
         const data = await res.json();
         await getTripActivitiesData();
         triggerUpdate();
+        toast.success("🗑️ Activities removed.");
       }
     } catch (error) {
       console.error(error.message);
@@ -234,6 +237,7 @@ const ActivityContainer = (props) => {
               }
               price={activity.activityPrice}
               hotelName={activity.activityName}
+              details={activity.activityDescription}
               onClick={() => {
                 if (isSelected) {
                   delActivityFromTrip(activity._id);

@@ -140,3 +140,7 @@ button:hover {
 .slick-center img:hover {
   border-radius: 0;
 }
+
+.Toastify__close-button--light{
+  width: 10%
+}

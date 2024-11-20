@@ -4,6 +4,7 @@ import styles from "./Accomboard.module.css";
 import AccomCard from "./AccomCard";
 import { useParams } from "react-router-dom";
 import { TripContext } from "../context/TripContext";
+import { toast } from "react-toastify";
 
 const AccomContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
@@ -106,9 +107,7 @@ const AccomContainer = (props) => {
         await getTripAccomsData();
 
         triggerUpdate();
-        if (props.onComplete) {
-          props.onComplete();
-        }
+        toast.success(<div>🏠 Accommodation Selected.</div>);
       }
     } catch (error) {
       console.error(error.message);
@@ -138,6 +137,7 @@ const AccomContainer = (props) => {
         const data = await res.json();
         await getTripAccomsData();
         triggerUpdate();
+        toast.success(<div>🗑️ Accommodation Removed.</div>);
       }
     } catch (error) {
       console.error(error.message);
@@ -189,7 +189,7 @@ const AccomContainer = (props) => {
         await getAccomsData(tripDestination);
         await getTripAccomsData(); //grab the options from this city.
         // same destination.
-        //how to retrive - selected ones.?
+        // retrive - selected ones.?
       }
     };
     fetchData();

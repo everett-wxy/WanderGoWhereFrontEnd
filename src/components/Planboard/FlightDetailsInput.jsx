@@ -87,9 +87,6 @@ const FlightDetailsInput = (props) => {
       return;
     }
 
-    console.log("Form submitted"); // Check if the form submission is detected
-    console.log("origin input: ", originInput);
-    console.log("destination input: ", destinationInput);
     // const departureUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${origin}&destination=${destination}&departureDate=${departureDate}&cabinClass=${cabinClass}`;
     // const arrivalUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${destination}&destination=${origin}&departureDate=${returnDate}&cabinClass=${cabinClass}`;
     const departureUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${originInput}&destination=${destinationInput}&departureDate=${departureDate}&cabinClass=${cabinClass}`;

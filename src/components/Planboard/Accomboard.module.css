@@ -63,6 +63,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.flightcard:hover {
+  transform: scale(1.05);
 }
 
 .flightcard > p {
@@ -103,4 +111,27 @@
 }
 .accombtn:-moz-user-disabled {
   background-color: var(--lightgray);
+}
+
+.details {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.showDetails {
+  opacity: 1;
 }

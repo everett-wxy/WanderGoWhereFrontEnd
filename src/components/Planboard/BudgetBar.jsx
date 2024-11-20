@@ -18,11 +18,6 @@ const BudgetBar = (props) => {
 
   const { id } = useParams();
 
-  const usedBudget =
-    Math.round(
-      (flightBudget + hotelBudget + activityBudget + foodBudget) * 10
-    ) / 10;
-
   const calculateDuration = (startDate, endDate) => {
     return differenceInDays(new Date(endDate), new Date(startDate));
   };
@@ -141,12 +136,10 @@ const BudgetBar = (props) => {
             onClick={() => setIsUpdate(true)}
           >
             <h3>
-              S${" "}
-              {usedBudget <= budget ? (
-                <span style={{ color: "var(--submain)" }}>{usedBudget}</span>
-              ) : (
-                <span style={{ color: "red" }}>{usedBudget}</span>
-              )}{" "}
+              {" "}
+              <span style={{ color: "var(--submain)" }}>
+                {foodBudget + hotelBudget + activityBudget + flightBudget}
+              </span>{" "}
               / {budget}
             </h3>
           </div>

@@ -3,7 +3,7 @@ import styles from "./PlanBoard.module.css";
 import { FlightContext } from "../context/FlightContext";
 import LoadingSpinner from "./LoadingSpinner";
 
-const FlightDetailsInput = (props) => {
+const FlightDetailsInput = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [departureDate, setDepartureDate] = useState("");
@@ -92,10 +92,6 @@ const FlightDetailsInput = (props) => {
       setDepartureFlightData(departureFlightData);
       setArrivalFlightData(arrivalFlightData);
       setIsLoading(false);
-      if (props.onComplete) {
-        console.log("onComplete triggered");
-        props.onComplete();
-      }
     } catch (error) {
       console.error("Error fetching flight data:", error);
       setIsLoading(false);
@@ -103,7 +99,7 @@ const FlightDetailsInput = (props) => {
   };
 
   return (
-    <div className={styles.flightdetailsinput} style={{ marginBottom: "20px" }}>
+    <div className={styles.flightdetailsinput}>
       <h1>Flight Search</h1>
       {isLoading ? <LoadingSpinner /> : null}
       <form className={styles.flightform} onSubmit={handleSubmit}>

@@ -3,7 +3,7 @@ import styles from "./PlanBoard.module.css";
 import { FlightContext } from "../context/FlightContext";
 import LoadingSpinner from "./LoadingSpinner";
 
-const FlightDetailsInput = (props) => {
+const FlightDetailsInput = () => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [departureDate, setDepartureDate] = useState("");
@@ -13,80 +13,55 @@ const FlightDetailsInput = (props) => {
     useContext(FlightContext);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [originError, setOriginError] = useState("");
-  const [destinationError, setDestinationError] = useState("");
-
-  const validInputs = {
-    singapore: "SIN",
-    istanbul: "IST",
-    tromsø: "TOS",
-    tromso: "TOS",
-    christchurch: "CHC",
-    sapporo: "CTS",
-    cairo: "CAI",
-    sin: "SIN",
-    ist: "IST",
-    tos: "TOS",
-    chc: "CHC",
-    cts: "CTS",
-    cai: "CAI",
-  };
-
-  const verifyInput = (input) => {
-    const lowerCaseInput = input.toLowerCase();
-    return validInputs[lowerCaseInput] || null;
-  };
-
-  const handleOriginChange = (e) => {
-    const value = e.target.value;
-    setOrigin(value);
-    const verifiedInput = verifyInput(value);
-    setOriginError(verifiedInput ? "" : "Invalid origin");
-  };
-
-  const handleDestinationChange = (e) => {
-    const value = e.target.value;
-    setDestination(value);
-    const verifiedInput = verifyInput(value);
-    setDestinationError(verifiedInput ? "" : "Invalid destination");
-  };
-
   const handleSubmit = async (event) => {
+    let originInput;
+    switch (origin.toLowerCase()) {
+      case "singapore":
+        originInput = "SIN";
+        break;
+      case "tromsø":
+      case "tromso":
+        originInput = "TOS";
+        break;
+      case "christchurch":
+        originInput = "CHC";
+        break;
+      case "sapporo":
+        originInput = "CTS";
+        break;
+      case "cairo":
+        originInput = "CAI";
+        break;
+      default:
+        originInput = origin;
+    }
+
+    let destinationInput;
+    switch (destination.toLowerCase()) {
+      case "singapore":
+        destinationInput = "SIN";
+        break;
+      case "tromsø":
+      case "tromso":
+        destinationInput = "TOS";
+        break;
+      case "christchurch":
+        destinationInput = "CHC";
+        break;
+      case "sapporo":
+        destinationInput = "CTS";
+        break;
+      case "cairo":
+        destinationInput = "CAI";
+        break;
+      default:
+        destinationInput = destination;
+    }
+
     event.preventDefault();
-
-    const originInput = verifyInput(origin);
-    const destinationInput = verifyInput(destination);
-
-    if (!originInput || !destinationInput) {
-      alert("Please enter valid origin and destination.");
-      return;
-    }
-
-    const today = new Date().toISOString().split("T")[0];
-
-    if (
-      !departureDate ||
-      isNaN(new Date(departureDate)) ||
-      new Date(departureDate) < new Date(today)
-    ) {
-      alert("Departure date must be today or later.");
-      return;
-    }
-
-    if (
-      !returnDate ||
-      isNaN(new Date(returnDate)) ||
-      new Date(returnDate) < new Date(today)
-    ) {
-      alert("Return date must be today or later.");
-      return;
-    }
-
-    if (new Date(returnDate) < new Date(departureDate)) {
-      alert("Return date must be after departure date.");
-      return;
-    }
-
+    console.log("Form submitted"); // Check if the form submission is detected
+    console.log("origin input: ", originInput);
+    console.log("destination input: ", destinationInput);
     // const departureUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${origin}&destination=${destination}&departureDate=${departureDate}&cabinClass=${cabinClass}`;
     // const arrivalUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${destination}&destination=${origin}&departureDate=${returnDate}&cabinClass=${cabinClass}`;
     const departureUrl = `http://localhost:5001/WanderGoWhere/flights?origin=${originInput}&destination=${destinationInput}&departureDate=${departureDate}&cabinClass=${cabinClass}`;
@@ -117,10 +92,6 @@ const FlightDetailsInput = (props) => {
       setDepartureFlightData(departureFlightData);
       setArrivalFlightData(arrivalFlightData);
       setIsLoading(false);
-      if (props.onComplete) {
-        console.log("onComplete triggered");
-        props.onComplete();
-      }
     } catch (error) {
       console.error("Error fetching flight data:", error);
       setIsLoading(false);
@@ -128,7 +99,7 @@ const FlightDetailsInput = (props) => {
   };
 
   return (
-    <div className={styles.flightdetailsinput} style={{ marginBottom: "20px" }}>
+    <div className={styles.flightdetailsinput}>
       <h1>Flight Search</h1>
       {isLoading ? <LoadingSpinner /> : null}
       <form className={styles.flightform} onSubmit={handleSubmit}>
@@ -138,24 +109,18 @@ const FlightDetailsInput = (props) => {
             <input
               type="text"
               value={origin}
-              onChange={handleOriginChange}
+              onChange={(e) => setOrigin(e.target.value)}
               placeholder="Enter origin airport"
             />
-            {originError && (
-              <p className={styles.errorMessage}>{originError}</p>
-            )}
           </div>
           <div>
             <label>Destination:</label>
             <input
               type="text"
               value={destination}
-              onChange={handleDestinationChange}
+              onChange={(e) => setDestination(e.target.value)}
               placeholder="Enter destination airport"
             />
-            {destinationError && (
-              <p className={styles.errorMessage}>{destinationError}</p>
-            )}
           </div>
 
           <div>

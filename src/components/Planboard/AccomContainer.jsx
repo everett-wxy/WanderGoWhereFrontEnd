@@ -5,6 +5,10 @@ import AccomCard from "./AccomCard";
 import { useParams } from "react-router-dom";
 import { TripContext } from "../context/TripContext";
 import { toast } from "react-toastify";
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 
 const AccomContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
@@ -109,6 +113,13 @@ const AccomContainer = (props) => {
         triggerUpdate();
 <<<<<<< HEAD
         toast.success(<div>🏠 Accommodation Selected.</div>);
+=======
+        toast.success(
+          <div>
+              🏠 Accommodation Selected.
+          </div>
+      );
+>>>>>>> main
       }
     } catch (error) {
       console.error(error.message);

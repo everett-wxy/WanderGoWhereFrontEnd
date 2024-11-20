@@ -4,6 +4,8 @@ import styles from "./Accomboard.module.css";
 import AccomCard from "./AccomCard";
 import { useParams } from "react-router-dom";
 import { TripContext } from "../context/TripContext";
+import { toast } from "react-toastify";
+
 
 const AccomContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
@@ -103,6 +105,11 @@ const AccomContainer = (props) => {
       } else {
         const data = await res.json();
         triggerUpdate();
+        toast.success(
+          <div>
+              🏠 Accommodation Selected.
+          </div>
+      );
       }
     } catch (error) {
       console.error(error.message);
@@ -131,6 +138,11 @@ const AccomContainer = (props) => {
       } else {
         const data = await res.json();
         triggerUpdate();
+        toast.success(
+          <div>
+              🗑️ Accommodation Removed.
+          </div>
+        )
       }
     } catch (error) {
       console.error(error.message);

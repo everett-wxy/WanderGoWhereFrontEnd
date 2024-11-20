@@ -61,7 +61,7 @@ const TripCard = (props) => {
         </div>
         <img
           className={styles.destinationimg}
-          src="https://cdn.midjourney.com/c7ecbb3e-4749-4ba7-9511-8803abf27568/0_2.png"
+          src={props.destinationImg}
           width="30%"
         />
         <div className={styles.listandbudget}>

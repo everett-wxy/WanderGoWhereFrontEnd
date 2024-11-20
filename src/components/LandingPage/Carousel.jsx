@@ -12,7 +12,7 @@ const Carousel = () => {
   const imagestray = [
     {
       url: "https://cdn.midjourney.com/84b73cc6-b31d-4ba3-82f6-ca1bfbc3608f/0_2.png",
-      country: "Norway,",
+      country: "Norway, Tromso",
     },
     {
       url: "https://cdn.midjourney.com/9f50d26d-42ee-41b4-b934-12225f98843a/0_3.png",

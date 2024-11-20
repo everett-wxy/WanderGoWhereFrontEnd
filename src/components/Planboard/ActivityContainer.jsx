@@ -114,7 +114,7 @@ const ActivityContainer = (props) => {
         const data = await res.json();
         await getTripActivitiesData();
         triggerUpdate();
-        toast.success("💃🏼 Activities added.")
+        toast.success("💃🏼 Activities added.");
         if (props.onComplete) {
           props.onComplete();
         }
@@ -237,6 +237,7 @@ const ActivityContainer = (props) => {
               }
               price={activity.activityPrice}
               hotelName={activity.activityName}
+              details={activity.activityDescription}
               onClick={() => {
                 if (isSelected) {
                   delActivityFromTrip(activity._id);

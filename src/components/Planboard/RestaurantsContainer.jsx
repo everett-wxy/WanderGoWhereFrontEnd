@@ -233,6 +233,7 @@ const RestaurantsContainer = (props) => {
               price={item.foodPrice}
               restaurant={item.restaurant}
               tier={item.tier}
+              details={item.foodDescription}
               onClick={() => {
                 if (isSelected) {
                   delRestaurantsFromTrip(item._id);

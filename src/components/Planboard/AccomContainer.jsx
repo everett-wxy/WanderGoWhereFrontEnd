@@ -5,17 +5,20 @@ import AccomCard from "./AccomCard";
 import { useParams } from "react-router-dom";
 import { TripContext } from "../context/TripContext";
 import { toast } from "react-toastify";
+<<<<<<< HEAD
+=======
 
+>>>>>>> main
 
 const AccomContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
   const { accessToken } = useContext(UserContext);
   const [accomsData, setAccomsData] = useState([]);
-  const [tripAccomsIdData, setTripAccomsIdData] = useState(""); //for showing Accoms ID . and toggling
-  const [selectedAccomsData, setSelectedAccomsData] = useState([]);
+  const [tripAccomsData, setTripAccomsData] = useState([]);
   const [tripDestination, setTripDestination] = useState("");
   const { id } = useParams();
 
+  //get destination or stored tripAccomsData
   const getTripData = async () => {
     ///grab saved destination here.
     try {
@@ -34,6 +37,7 @@ const AccomContainer = (props) => {
       } else {
         const data = await res.json();
         setTripDestination(data.itineraries[0]?.arrPort);
+        triggerUpdate();
       }
     } catch (error) {
       console.error(error.message);
@@ -104,12 +108,18 @@ const AccomContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
+        await getTripAccomsData();
+
         triggerUpdate();
+<<<<<<< HEAD
+        toast.success(<div>🏠 Accommodation Selected.</div>);
+=======
         toast.success(
           <div>
               🏠 Accommodation Selected.
           </div>
       );
+>>>>>>> main
       }
     } catch (error) {
       console.error(error.message);
@@ -137,12 +147,17 @@ const AccomContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
+        await getTripAccomsData();
         triggerUpdate();
+<<<<<<< HEAD
+        toast.success(<div>🗑️ Accommodation Removed.</div>);
+=======
         toast.success(
           <div>
               🗑️ Accommodation Removed.
           </div>
         )
+>>>>>>> main
       }
     } catch (error) {
       console.error(error.message);
@@ -150,10 +165,10 @@ const AccomContainer = (props) => {
     }
   };
 
-  const getTripAccomsIdData = async () => {
+  const getTripAccomsData = async () => {
     try {
       const res = await fetch(
-        import.meta.env.VITE_SERVER + "/WanderGoWhere/trips/" + id,
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/onetrip/" + id,
         {
           method: "GET",
           headers: {
@@ -166,73 +181,48 @@ const AccomContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
-        setTripAccomsIdData(data.accoms?.[0]); //ID always return in array!!!!
+        setTripAccomsData(data.accoms);
       }
     } catch (error) {
       console.error(error.message);
-    }
-  }; //do backend condition that there can only be one ID
-  //ONLY ONE ID .
-
-  const handleAddAccomsToTrip = (accomId) => {
-    if (tripAccomsIdData) {
-      alert("already selected an accoms");
-    } else addAccomsToTrip(accomId);
-    setTripAccomsIdData(accomId);
-    getPopulatedAccomsData(accomId);
-    if (props.onComplete) {
-      props.onComplete();
-    }
-  };
-
-  const handleDelAccomsFromTrip = (accomId) => {
-    delAccomsFromTrip(accomId);
-    setTripAccomsIdData("");
-    setSelectedAccomsData([]);
-    getTripData();
-    if (tripDestination) {
-      getAccomsData(tripDestination);
-    }
-  };
-
-  const getPopulatedAccomsData = async (accomId) => {
-    try {
-      const res = await fetch(
-        import.meta.env.VITE_SERVER + "/WanderGoWhere/accoms/id",
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-            authorization: "Bearer " + accessToken,
-          },
-          body: JSON.stringify({
-            _id: accomId,
-          }),
-        }
-      );
-      if (!res.ok) {
-        throw new Error("data error");
-      } else {
-        const data = await res.json();
-        setSelectedAccomsData([data]);
-      }
-    } catch (error) {
-      console.error(error.message);
-      return;
     }
   };
 
   useEffect(() => {
-    if (destinationInput) {
-      getAccomsData(destinationInput);
-    }
+    getTripData(); //if trip data has accoms info
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (destinationInput) {
+        await getAccomsData(destinationInput);
+        await getTripAccomsData();
+      }
+    };
+    fetchData();
   }, [destinationInput]);
 
   useEffect(() => {
-    getTripData();
-    if (tripDestination) {
-      getAccomsData(tripDestination);
-    }
+    const fetchData = async () => {
+      await getTripData();
+      if (tripDestination) {
+        await getAccomsData(tripDestination);
+        await getTripAccomsData(); //grab the options from this city.
+        // same destination.
+        // retrive - selected ones.?
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (tripDestination) {
+        await getAccomsData(tripDestination);
+        await getTripAccomsData();
+      }
+    };
+    fetchData();
   }, [tripDestination]);
 
   return (
@@ -246,7 +236,7 @@ const AccomContainer = (props) => {
       >
         <h6>{props.message}</h6>
       </div>
-      {!tripAccomsIdData ? (
+      {tripAccomsData.length === 0 ? (
         <div className={styles.flightcardbox}>
           {accomsData.map((accom) => {
             return (
@@ -256,7 +246,7 @@ const AccomContainer = (props) => {
                 price={accom.hotelPrice}
                 hotelName={accom.hotelName}
                 onClick={() => {
-                  handleAddAccomsToTrip(accom._id);
+                  addAccomsToTrip(accom._id);
                 }}
                 btnMsg="+"
                 btnStyle={{ backgroundColor: "var(--main)" }}
@@ -264,17 +254,17 @@ const AccomContainer = (props) => {
             );
           })}
         </div>
-      ) : selectedAccomsData[0] ? (
+      ) : tripAccomsData.length > 0 ? (
         <div className={styles.flightcardbox}>
           <AccomCard
-            key={selectedAccomsData[0]?._id}
+            key={tripAccomsData[0]?._id}
             hotelImg={
-              selectedAccomsData[0].imageOne ||
+              tripAccomsData[0].imageOne ||
               "https://cdn.midjourney.com/c7ecbb3e-4749-4ba7-9511-8803abf27568/0_2.png"
             }
-            price={selectedAccomsData[0].hotelPrice}
-            hotelName={selectedAccomsData[0].hotelName}
-            onClick={() => handleDelAccomsFromTrip(tripAccomsIdData)}
+            price={tripAccomsData[0].hotelPrice}
+            hotelName={tripAccomsData[0].hotelName}
+            onClick={() => delAccomsFromTrip(tripAccomsData[0]._id)}
             btnMsg="Selected"
             btnStyle={{ backgroundColor: "orangered" }}
           />

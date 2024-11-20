@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 import Carousel from "./Carousel";
 import { TypeAnimation } from "react-type-animation";
 
-const LandingPage = () => {
+const LandingPage = (props) => {
   return (
     <div className={styles.landingpage}>
       <div
@@ -51,9 +51,7 @@ const LandingPage = () => {
               height: "90px",
               fontSize: "26px",
             }}
-            onClick={()=>{
-              
-            }}
+            onClick={props.signupFn}
           >
             Find out more
           </button>

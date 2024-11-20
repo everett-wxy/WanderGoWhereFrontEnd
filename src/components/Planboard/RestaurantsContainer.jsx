@@ -187,7 +187,6 @@ const RestaurantsContainer = (props) => {
   useEffect(() => {
     getTripData();
     const fetchData = async () => {
-      console.log("trip destination:", tripDestination);
       if (tripDestination) {
         await getRestaurantsData(tripDestination);
         await getTripRestaurantsData();
@@ -198,7 +197,6 @@ const RestaurantsContainer = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Updated trip destination:", tripDestination);
       if (tripDestination) {
         await getRestaurantsData(tripDestination);
         await getTripRestaurantsData();

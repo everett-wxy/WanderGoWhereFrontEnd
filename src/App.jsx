@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "./components/NavBar";
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage/LandingPage";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Planboard from "./components/Planboard/Planboard";

@@ -57,7 +57,7 @@ const Carousel = () => {
   };
   return (
     <div className={styles.carouselcontainer}>
-      <Slider {...settings}>
+      <Slider arrows={false} {...settings}>
         {imagestray.map((image, idx) => {
           return (
             <div key={idx}>

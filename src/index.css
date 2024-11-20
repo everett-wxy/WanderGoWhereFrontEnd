@@ -8,6 +8,7 @@
   --placeholder: rgb(189, 189, 189);
   --lightgray: rgba(197, 197, 197, 0.2);
   --darkgray: rgba(175, 175, 175, 0.744);
+  --black: rgba(0, 0, 0, 0.744);
 }
 
 * {
@@ -62,7 +63,7 @@ li {
 
 a {
   text-decoration: none;
-  color: var(--darkgray);
+  color: var(--black);
   transition: transform 0.3s ease, color 0.3s ease;
 }
 

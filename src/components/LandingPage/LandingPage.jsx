@@ -51,6 +51,9 @@ const LandingPage = () => {
               height: "90px",
               fontSize: "26px",
             }}
+            onClick={()=>{
+              
+            }}
           >
             Find out more
           </button>

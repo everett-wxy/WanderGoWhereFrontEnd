@@ -3,7 +3,7 @@ import styles from "./PlanBoard.module.css";
 import { FlightContext } from "../context/FlightContext";
 import LoadingSpinner from "./LoadingSpinner";
 
-const FlightDetailsInput = () => {
+const FlightDetailsInput = (props) => {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [departureDate, setDepartureDate] = useState("");
@@ -92,6 +92,9 @@ const FlightDetailsInput = () => {
       setDepartureFlightData(departureFlightData);
       setArrivalFlightData(arrivalFlightData);
       setIsLoading(false);
+      if (props.onComplete) {
+        props.onComplete();
+      }
     } catch (error) {
       console.error("Error fetching flight data:", error);
       setIsLoading(false);

@@ -5,10 +5,6 @@ import AccomCard from "./AccomCard";
 import { useParams } from "react-router-dom";
 import { TripContext } from "../context/TripContext";
 import { toast } from "react-toastify";
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 
 const AccomContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
@@ -111,15 +107,10 @@ const AccomContainer = (props) => {
         await getTripAccomsData();
 
         triggerUpdate();
-<<<<<<< HEAD
         toast.success(<div>🏠 Accommodation Selected.</div>);
-=======
-        toast.success(
-          <div>
-              🏠 Accommodation Selected.
-          </div>
-      );
->>>>>>> main
+        if (props.onComplete) {
+          props.onComplete();
+        }
       }
     } catch (error) {
       console.error(error.message);
@@ -149,15 +140,7 @@ const AccomContainer = (props) => {
         const data = await res.json();
         await getTripAccomsData();
         triggerUpdate();
-<<<<<<< HEAD
         toast.success(<div>🗑️ Accommodation Removed.</div>);
-=======
-        toast.success(
-          <div>
-              🗑️ Accommodation Removed.
-          </div>
-        )
->>>>>>> main
       }
     } catch (error) {
       console.error(error.message);

@@ -11,7 +11,6 @@ const Planboard = () => {
     <TripProvider>
       <FlightProvider>
         <div className={styles.planboard}>
-          <div style={{ marginTop: "180px", marginBottom: "250px" }}></div>
           <BudgetBar />
           <TripName />
           <PlanboardDisplay />

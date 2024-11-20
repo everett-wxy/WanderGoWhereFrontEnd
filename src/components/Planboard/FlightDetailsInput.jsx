@@ -3,7 +3,7 @@ import styles from "./PlanBoard.module.css";
 import { FlightContext } from "../context/FlightContext";
 import LoadingSpinner from "./LoadingSpinner";
 
-const FlightDetailsInput = () => {
+const FlightDetailsInput = (props) => {
     const [origin, setOrigin] = useState("");
     const [destination, setDestination] = useState("");
     const [departureDate, setDepartureDate] = useState("");
@@ -114,44 +114,48 @@ const FlightDetailsInput = () => {
                 );
             }
 
-            const departureFlightData = await departureResponse.json();
-            const arrivalFlightData = await arrivalResponse.json();
-            console.log(departureFlightData);
-            setDepartureFlightData(departureFlightData);
-            setArrivalFlightData(arrivalFlightData);
-            setIsLoading(false);
-        } catch (error) {
-            console.error("Error fetching flight data:", error);
-            setIsLoading(false);
-        }
-    };
+      const departureFlightData = await departureResponse.json();
+      const arrivalFlightData = await arrivalResponse.json();
+      console.log(departureFlightData);
+      setDepartureFlightData(departureFlightData);
+      setArrivalFlightData(arrivalFlightData);
+      setIsLoading(false);
+      if (props.onComplete) {
+        console.log("onComplete triggered");
+        props.onComplete();
+      }
+    } catch (error) {
+      console.error("Error fetching flight data:", error);
+      setIsLoading(false);
+    }
+  };
 
-    return (
-        <div className={styles.flightdetailsinput}>
-            <h1>Flight Search</h1>
-            {isLoading ? <LoadingSpinner /> : null}
-            <form className={styles.flightform} onSubmit={handleSubmit}>
-                <div className={styles.flightformcity}>
-                    <div>
-                        <label>Origin:</label>
-                        <input
-                            type="text"
-                            value={origin}
-                            onChange={handleOriginChange}
-                            placeholder="Enter origin airport"
-                        />
-                        {originError && <p className={styles.errorMessage}>{originError}</p>}
-                    </div>
-                    <div>
-                        <label>Destination:</label>
-                        <input
-                            type="text"
-                            value={destination}
-                            onChange={handleDestinationChange}
-                            placeholder="Enter destination airport"
-                        />
-                         {destinationError && <p className={styles.errorMessage}>{destinationError}</p>}
-                    </div>
+  return (
+    <div className={styles.flightdetailsinput} style={{ marginBottom: "20px" }}>
+      <h1>Flight Search</h1>
+      {isLoading ? <LoadingSpinner /> : null}
+      <form className={styles.flightform} onSubmit={handleSubmit}>
+        <div className={styles.flightformcity}>
+          <div>
+            <label>Origin:</label>
+            <input
+              type="text"
+              value={origin}
+              onChange={handleOriginChange}
+              placeholder="Enter origin airport"
+            />
+            {originError && <p className={styles.errorMessage}>{originError}</p>}
+          </div>
+          <div>
+            <label>Destination:</label>
+            <input
+              type="text"
+              value={destination}
+              onChange={handleDestinationChange}
+              placeholder="Enter destination airport"
+            />
+            {destinationError && <p className={styles.errorMessage}>{destinationError}</p>}
+          </div>
 
                     <div>
                         <label>Departure Date:</label>

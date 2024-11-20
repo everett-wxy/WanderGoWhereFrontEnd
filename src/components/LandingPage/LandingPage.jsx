@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./LandingPage.module.css";
-import SearchBar from "./SearchBar";
 import Carousel from "./Carousel";
 import { TypeAnimation } from "react-type-animation";
 

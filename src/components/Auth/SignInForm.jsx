@@ -28,7 +28,7 @@ const OverLay = (props) => {
         localStorage.setItem("accessToken", data.access);
         userCtx.setAccessToken(data.access);
         const decoded = jwtDecode(data.access);
-        userCtx.setUsername(decoded.username);
+        // userCtx.setUsername(decoded.username);
         props.setShowSigninModal(false);
         navigate("/dashboard");
       } else {

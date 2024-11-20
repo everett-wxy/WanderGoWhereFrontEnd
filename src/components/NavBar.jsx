@@ -27,7 +27,6 @@ const NavBar = (props) => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setAccessToken("");
-    setUsername("");
   };
 
   const createTrip = async () => {

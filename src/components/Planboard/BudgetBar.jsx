@@ -7,7 +7,7 @@ import { differenceInDays } from "date-fns";
 
 const BudgetBar = (props) => {
   const { update } = useContext(TripContext);
-  const { accessToken, setAccessToken } = useContext(UserContext);
+  const { accessToken } = useContext(UserContext);
   const [budget, setBudget] = useState(0);
   const [duration, setDuration] = useState(0);
   const [flightBudget, setFlightBudget] = useState(0);
@@ -72,8 +72,6 @@ const BudgetBar = (props) => {
           return sum + restaurant.foodPrice;
         }, 0);
         setFoodBudget(totalFoodBudget);
-
-        console.log("Trip budget successfully fetched");
       }
     } catch (error) {
       console.error(error.message);
@@ -100,7 +98,6 @@ const BudgetBar = (props) => {
       } else {
         const data = await res.json();
         getOneTrip();
-        console.log("budget updated");
       }
     } catch (error) {
       console.error(error.message);

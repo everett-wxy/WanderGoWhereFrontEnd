@@ -25,6 +25,7 @@
   background-color: white;
   width: 100%;
   min-height: 20%;
+  height: fit-content;
   border-radius: 40px;
   border: 1px solid var(--main);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
@@ -33,6 +34,7 @@
   z-index: 1;
   display: grid;
   grid-template-rows: 15% 85%;
+  padding: 0 0 20px 0;
 }
 
 .flightctnrcomponent {
@@ -46,7 +48,7 @@
   flex-direction: row;
   column-gap: 10px;
   padding: 10px;
-  height: inherit;
+  height: max-content;
   overflow-x: scroll;
   overflow-y: hidden;
 }
@@ -54,11 +56,13 @@
 .flightcard {
   background-color: var(--lightgray);
   flex: 0 0 300px;
+  min-height: fit-content;
   height: auto;
   border-radius: 30px;
   text-align: center;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .flightcard > p {

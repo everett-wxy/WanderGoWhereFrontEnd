@@ -104,7 +104,6 @@ const TripCardDisplay = (props) => {
       } else {
         const data = await res.json();
         navigate(`/planboard/${data.createdTrip._id}`);
-        console.log(data._id);
       }
     } catch (error) {
       console.error(error.message);

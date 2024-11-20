@@ -28,8 +28,7 @@ const OverLay = (props) => {
         localStorage.setItem("accessToken", data.access);
         userCtx.setAccessToken(data.access);
         const decoded = jwtDecode(data.access);
-        userCtx.setUsername(decoded.username);
-        console.log("Sign in successful");
+        // userCtx.setUsername(decoded.username);
         props.setShowSigninModal(false);
         navigate("/dashboard");
       } else {
@@ -39,7 +38,6 @@ const OverLay = (props) => {
     } catch (error) {
       console.error(error.message);
     }
-    console.log(userInput);
     setUserInput({ email: "", password: "" });
   };
 

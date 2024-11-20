@@ -7,13 +7,11 @@ import RestaurantCard from "./RestaurantCard";
 import { TripContext } from "../context/TripContext";
 
 const RestaurantsContainer = (props) => {
-  const { accessToken, setAccessToken } = useContext(UserContext);
+  const { accessToken } = useContext(UserContext);
   const { triggerUpdate, destinationInput } = useContext(TripContext);
   const [restaurantsData, setRestaurantsData] = useState([]);
   const [tripRestaurantsData, setTripRestaurantsData] = useState([]);
   const { id } = useParams();
-
-  // if tripRestaurantData.includes restaurantId => btn = orange
 
   const getRestaurantsData = async (destinationInput) => {
     let city = destinationInput;
@@ -33,8 +31,6 @@ const RestaurantsContainer = (props) => {
     if (city === "CAI") {
       city = "Cairo, Egypt";
     }
-
-    console.log("City being sent:", city);
 
     try {
       const res = await fetch(
@@ -62,8 +58,6 @@ const RestaurantsContainer = (props) => {
   };
 
   const addRestaurantsToTrip = async (restaurantId) => {
-    console.log("Restaurant ID being added:", restaurantId);
-
     const tripRestaurantId = tripRestaurantsData.map((item) => {
       item._id;
     }); // current trip restaurant ID
@@ -95,7 +89,6 @@ const RestaurantsContainer = (props) => {
         throw new Error(errorData.message || "Failed to add restaurant");
       } else {
         const data = await res.json();
-        console.log("SUCCESS");
         triggerUpdate();
         await getTripRestaurantsData();
       }
@@ -125,7 +118,6 @@ const RestaurantsContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
-        console.log("SUCCESSSFULLT DELETED");
         triggerUpdate();
         await getTripRestaurantsData();
       }
@@ -152,7 +144,6 @@ const RestaurantsContainer = (props) => {
       } else {
         const data = await res.json();
         setTripRestaurantsData(data.restaurants || []);
-        console.log("restaurants data for this trip successfully fetched");
       }
     } catch (error) {
       console.error(error.messasge);
@@ -175,10 +166,6 @@ const RestaurantsContainer = (props) => {
     }
   }, [destinationInput]);
 
-  useEffect(() => {
-    console.log("Updated tripRestaurantsData:", tripRestaurantsData);
-  }, [tripRestaurantsData]);
-
   return (
     <div className={styles.flightcontainer}>
       <div
@@ -194,7 +181,6 @@ const RestaurantsContainer = (props) => {
       <div className={styles.flightcardbox}>
         {restaurantsData.map((item) => {
           const isSelected = tripRestaurantsData.includes(item._id);
-          console.log(`Restaurant ${item._id} isSelected:`, isSelected);
 
           return (
             <RestaurantCard

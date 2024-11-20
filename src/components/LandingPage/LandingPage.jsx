@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./LandingPage.module.css";
-import SearchBar from "./SearchBar";
 import Carousel from "./Carousel";
 import { TypeAnimation } from "react-type-animation";
 
@@ -9,7 +8,7 @@ const LandingPage = (props) => {
     <div className={styles.landingpage}>
       <div
         style={{
-          marginTop: "275px",
+          marginTop: "250px",
         }}
       ></div>
       <div
@@ -58,8 +57,6 @@ const LandingPage = (props) => {
         </div>
         <Carousel />
       </div>
-
-      {/* <SearchBar /> */}
     </div>
   );
 };

@@ -26,7 +26,7 @@ const OverLay = (props) => {
         throw new Error("data error");
       } else alert("You have signed up successfully. Please proceed to log in");
     } catch (error) {
-      console.error(error.message); //I GOT QUESTION
+      console.error(error.message);
       alert("Signed up failed. Please try again");
     }
     setUserInput({ email: "", password: "" });

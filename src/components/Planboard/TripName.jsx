@@ -25,7 +25,6 @@ const TripName = () => {
       } else {
         const data = await res.json();
         setTripName(data.name);
-        console.log("Trip budget successfully fetched");
       }
     } catch (error) {
       console.error(error.message);
@@ -52,7 +51,6 @@ const TripName = () => {
       } else {
         const data = await res.json();
         getTripData();
-        console.log("budget updated");
       }
     } catch (error) {
       console.error(error.message);

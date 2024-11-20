@@ -11,7 +11,31 @@ const RestaurantsContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
   const [restaurantsData, setRestaurantsData] = useState([]);
   const [tripRestaurantsData, setTripRestaurantsData] = useState([]);
+  const [tripDestination, setTripDestination] = useState("");
   const { id } = useParams();
+
+  const getTripData = async () => {
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/onetrip/" + id,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            authorization: "Bearer " + accessToken,
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("data error");
+      } else {
+        const data = await res.json();
+        setTripDestination(data.itineraries[0].arrPort);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   const getRestaurantsData = async (destinationInput) => {
     let city = destinationInput;
@@ -161,10 +185,16 @@ const RestaurantsContainer = (props) => {
   }, [destinationInput]);
 
   useEffect(() => {
-    if (destinationInput) {
-      getRestaurantsData(destinationInput);
-    }
-  }, [destinationInput]);
+    getTripData();
+    const fetchData = async () => {
+      console.log("trip destination:", tripDestination);
+      if (tripDestination) {
+        await getRestaurantsData(tripDestination);
+        await getTripRestaurantsData();
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.flightcontainer}>

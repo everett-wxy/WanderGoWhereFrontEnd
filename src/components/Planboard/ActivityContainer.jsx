@@ -10,6 +10,7 @@ const ActivityContainer = (props) => {
   const { accessToken } = useContext(UserContext);
   const [activitiesData, setActivitiesData] = useState([]);
   const [tripActivitiesData, setTripActivitiesData] = useState([]);
+  const [tripDestination, setTripDestination] = useState("");
   const { id } = useParams();
 
   //if tripActivitiesData.include activityId => btn = orange
@@ -30,6 +31,7 @@ const ActivityContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
+        setTripDestination(data.itineraries[0].arrPort);
       }
     } catch (error) {
       console.error(error.message);
@@ -176,12 +178,27 @@ const ActivityContainer = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getTripData();
-      await getActivitiesData(destinationInput);
-      await getTripActivitiesData();
+      if (destinationInput) {
+        await getActivitiesData(destinationInput);
+        await getTripActivitiesData();
+      }
     };
     fetchData();
   }, [destinationInput]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getTripData();
+      console.log("tripdestination: ", tripDestination);
+      if (tripDestination) {
+        await getActivitiesData(tripDestination);
+        await getTripActivitiesData(); //grab the options from this city.
+        // same destination.
+        //how to retrive - selected ones.?
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.flightcontainer}>

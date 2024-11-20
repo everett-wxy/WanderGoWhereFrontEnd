@@ -57,10 +57,12 @@
       rgba(0, 0, 0, 0.5),
       rgba(230, 230, 230, 0.453)
     ),
-    /* Gradient overlay */
-      url("https://cdn.midjourney.com/da4cecd4-636a-44af-8931-c9ba5e7b331a/0_3.png");
-  /* background-image: url("https://cdn.midjourney.com/da4cecd4-636a-44af-8931-c9ba5e7b331a/0_2.png"); */
+    url("https://cdn.midjourney.com/da4cecd4-636a-44af-8931-c9ba5e7b331a/0_3.png");
   background-size: cover;
+}
+
+.landingpage div {
+  align-items: center;
 }
 
 .carouselcontainer img {

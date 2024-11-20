@@ -5,12 +5,11 @@ import { FlightContext } from "../context/FlightContext";
 import { useParams } from "react-router-dom";
 import UserContext from "../context/user";
 import { TripContext } from "../context/TripContext";
-import { differenceInDays } from "date-fns";
 
 const FlightContainer = (props) => {
   const { id } = useParams();
   const { triggerUpdate, triggerInputUpdate } = useContext(TripContext);
-  const { accessToken, setAccessToken } = useContext(UserContext);
+  const { accessToken } = useContext(UserContext);
   const { departureFlightData, arrivalFlightData } = useContext(FlightContext);
   const [itineraries, setItineraries] = useState([]);
   let message = `${props.flight} flight`;
@@ -31,7 +30,6 @@ const FlightContainer = (props) => {
         throw new Error(`Error: ${response.statusText}`);
       }
       const data = await response.json();
-      //   console.log("itinerary for current trip fetched");
       setItineraries(data.itineraries);
     } catch (error) {
       console.error("Failed to fetch itineraries:", error);
@@ -108,7 +106,6 @@ const FlightContainer = (props) => {
               flight.itineraries[0].segments[0].carrierCode
             ];
         }
-        //   console.log(data);
         return data;
       });
     } else {
@@ -130,7 +127,6 @@ const FlightContainer = (props) => {
         }
       );
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         alert("Itinerary added successfully!");
         fetchCurrentItinerary();
@@ -138,7 +134,6 @@ const FlightContainer = (props) => {
         findItinerary(data.itineraryId);
 
         if (props.onComplete) {
-          console.log("onComplete triggered");
           props.onComplete();
         }
       } else {
@@ -164,13 +159,11 @@ const FlightContainer = (props) => {
         }
       );
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         alert("Itinerary added successfully!");
         fetchCurrentItinerary();
         triggerUpdate();
         if (props.onComplete) {
-          console.log("onComplete triggered");
           props.onComplete();
         }
       } else {
@@ -231,9 +224,7 @@ const FlightContainer = (props) => {
         throw new Error(`Error: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log("findItinerary: ", data);
       if (data && data.itinerary && data.itinerary.arrPort) {
-        console.log("Triggering input update with: ", data.itinerary.arrPort);
         triggerInputUpdate(data.itinerary.arrPort);
       }
       return data;
@@ -241,10 +232,6 @@ const FlightContainer = (props) => {
       console.error("Failed to fetch itineraries:", error);
     }
   };
-
-  useEffect(() => {
-    console.log();
-  });
 
   return (
     <div className={styles.flightcontainer}>

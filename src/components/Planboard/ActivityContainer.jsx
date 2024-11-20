@@ -7,7 +7,7 @@ import { TripContext } from "../context/TripContext";
 
 const ActivityContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
-  const { accessToken, setAccessToken } = useContext(UserContext);
+  const { accessToken} = useContext(UserContext);
   const [activitiesData, setActivitiesData] = useState([]);
   const [tripActivitiesData, setTripActivitiesData] = useState([]);
   const { id } = useParams();
@@ -80,8 +80,6 @@ const ActivityContainer = (props) => {
   };
 
   const addActivityToTrip = async (activityId) => {
-    console.log("Activity ID being added:", activityId);
-
     const tripActivityIds = tripActivitiesData.map((activity) => activity._id); // get current trip activity IDs
     if (tripActivityIds.includes(activityId)) {
       alert("Activity already selected");
@@ -111,11 +109,9 @@ const ActivityContainer = (props) => {
         throw new Error(errorData.message || "Failed to add activity");
       } else {
         const data = await res.json();
-        console.log("SUCCESS");
         await getTripActivitiesData();
         triggerUpdate();
         if (props.onComplete) {
-          console.log("onComplete triggered");
           props.onComplete();
         }
       }
@@ -146,7 +142,6 @@ const ActivityContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
-        console.log("SUCCESSFULLY DELETED");
         await getTripActivitiesData();
         triggerUpdate();
       }
@@ -173,7 +168,6 @@ const ActivityContainer = (props) => {
       } else {
         const data = await res.json();
         setTripActivitiesData(data.activities || []);
-        console.log("activities data for this trip successfully fetched");
       }
     } catch (error) {
       console.error(error.message);
@@ -188,10 +182,6 @@ const ActivityContainer = (props) => {
     };
     fetchData();
   }, [destinationInput]);
-
-  useEffect(() => {
-    console.log("Updated tripActivitiesData:", tripActivitiesData);
-  }, [tripActivitiesData]);
 
   return (
     <div className={styles.flightcontainer}>
@@ -208,7 +198,6 @@ const ActivityContainer = (props) => {
       <div className={styles.flightcardbox}>
         {activitiesData.map((activity) => {
           const isSelected = tripActivitiesData.includes(activity._id);
-          console.log(`Activity ${activity._id} isSelected:`, isSelected);
 
           return (
             <ActivityCard

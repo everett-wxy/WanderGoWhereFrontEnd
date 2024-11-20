@@ -7,7 +7,7 @@ import { TripContext } from "../context/TripContext";
 
 const AccomContainer = (props) => {
   const { triggerUpdate, destinationInput } = useContext(TripContext);
-  const { accessToken, setAccessToken } = useContext(UserContext);
+  const { accessToken } = useContext(UserContext);
   const [accomsData, setAccomsData] = useState([]);
   const [tripAccomsIdData, setTripAccomsIdData] = useState(""); //for showing Accoms ID . and toggling
   const [selectedAccomsData, setSelectedAccomsData] = useState([]);
@@ -77,7 +77,6 @@ const AccomContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
-        console.log("SUCCESS");
         triggerUpdate();
       }
     } catch (error) {
@@ -106,7 +105,6 @@ const AccomContainer = (props) => {
         throw new Error("data error");
       } else {
         const data = await res.json();
-        console.log("SUCCESSFULLY DELETED");
         triggerUpdate();
       }
     } catch (error) {
@@ -132,7 +130,6 @@ const AccomContainer = (props) => {
       } else {
         const data = await res.json();
         setTripAccomsIdData(data.accoms?.[0]); //ID always return in array!!!!
-        console.log("accoms data for this trip successfully fetched");
       }
     } catch (error) {
       console.error(error.message);
@@ -177,7 +174,6 @@ const AccomContainer = (props) => {
       } else {
         const data = await res.json();
         setSelectedAccomsData([data]);
-        console.log("Populated Accom data successfully fetched");
       }
     } catch (error) {
       console.error(error.message);
@@ -203,7 +199,6 @@ const AccomContainer = (props) => {
 
   useEffect(() => {
     if (tripAccomsIdData) {
-      console.log("Trip Accommodations Data Updated:", tripAccomsIdData);
       getPopulatedAccomsData(tripAccomsIdData);
     }
   }, [tripAccomsIdData]);

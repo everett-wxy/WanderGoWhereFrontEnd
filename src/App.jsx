@@ -12,7 +12,6 @@ function App() {
   const [showSigninModal, setShowSigninModal] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [accessToken, setAccessToken] = useState("");
-  const [username, setUsername] = useState("");
 
   const onAppLoads = () => {
     const token = localStorage.getItem("accessToken") || "";
@@ -25,9 +24,7 @@ function App() {
 
   return (
     <>
-      <UserContext.Provider
-        value={{ accessToken, setAccessToken, username, setUsername }}
-      >
+      <UserContext.Provider value={{ accessToken, setAccessToken }}>
         <BrowserRouter>
           {showSigninModal && (
             <SignInModal setShowSigninModal={setShowSigninModal} />
@@ -41,7 +38,12 @@ function App() {
             setAccessToken={setAccessToken}
           />
           <Routes>
-            <Route path="/" element={<LandingPage signupFn={() => setShowSignupModal(true)}/>} />
+            <Route
+              path="/"
+              element={
+                <LandingPage signupFn={() => setShowSignupModal(true)} />
+              }
+            />
             {accessToken.length > 0 && (
               <>
                 <Route path="/dashboard" element={<Dashboard />} />

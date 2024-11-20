@@ -29,7 +29,6 @@ const OverLay = (props) => {
         userCtx.setAccessToken(data.access);
         const decoded = jwtDecode(data.access);
         userCtx.setUsername(decoded.username);
-        console.log("Sign in successful");
         props.setShowSigninModal(false);
         navigate("/dashboard");
       } else {
@@ -39,7 +38,6 @@ const OverLay = (props) => {
     } catch (error) {
       console.error(error.message);
     }
-    console.log(userInput);
     setUserInput({ email: "", password: "" });
   };
 

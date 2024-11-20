@@ -12,23 +12,28 @@ const Carousel = () => {
   const imagestray = [
     {
       url: "https://cdn.midjourney.com/84b73cc6-b31d-4ba3-82f6-ca1bfbc3608f/0_2.png",
-      country: "Norway, Tromso",
+      country: "Norway,",
+      city: "Tromso",
     },
     {
       url: "https://cdn.midjourney.com/9f50d26d-42ee-41b4-b934-12225f98843a/0_3.png",
-      title: "Japan, Sapporo",
+      country: "Japan,",
+      city: "Sapporo",
     },
     {
       url: "https://cdn.midjourney.com/aba2e0b3-2bcb-4e4e-b928-eb0499dde040/0_3.png",
-      title: "Egypt, Cairo",
+      country: "Egypt,",
+      city: "Cairo",
     },
     {
       url: "https://cdn.midjourney.com/8867e8d0-d6fc-4aa7-9449-45a344173e45/0_3.png",
-      title: "Turkey, Istanbul",
+      country: "Turkey,",
+      city: "Istanbul",
     },
     {
       url: "https://cdn.midjourney.com/c548e6d4-e23b-46b8-bb04-f76c8f0648cd/0_2.png",
-      title: "New Zealand, Christchurch",
+      country: "New Zealand,",
+      city: "Christchurch",
     },
   ];
 
@@ -53,19 +58,29 @@ const Carousel = () => {
   return (
     <div className={styles.carouselcontainer}>
       <Slider {...settings}>
-        {imagestray.map((image) => {
+        {imagestray.map((image, idx) => {
           return (
-            <div>
-              <h3
+            <div key={idx}>
+              <div
                 style={{
                   position: "absolute",
                   bottom: "20px",
-                  left: "20px",
+                  left: "30px",
                   color: "white",
                 }}
               >
-                {image.title}
-              </h3>
+                <h3 style={{ fontSize: "30px" }}>{image.country}</h3>
+                <p
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "500",
+                    marginTop: "-10px",
+                  }}
+                >
+                  {image.city}
+                </p>
+              </div>
+
               <img src={image.url} />
             </div>
           );

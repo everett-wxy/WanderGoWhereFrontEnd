@@ -183,6 +183,7 @@ const AccomContainer = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("destinationInput:", destinationInput);
       if (destinationInput) {
         await getAccomsData(destinationInput);
       }
@@ -198,6 +199,7 @@ const AccomContainer = (props) => {
   }, [destinationInput]);
 
   useEffect(() => {
+    getTripAccomsIdData();
     if (tripAccomsIdData) {
       getPopulatedAccomsData(tripAccomsIdData);
     }

@@ -107,6 +107,7 @@ const AccomContainer = (props) => {
         await getTripAccomsData();
 
         triggerUpdate();
+<<<<<<< HEAD
         toast.success(<div>🏠 Accommodation Selected.</div>);
       }
     } catch (error) {
@@ -137,7 +138,15 @@ const AccomContainer = (props) => {
         const data = await res.json();
         await getTripAccomsData();
         triggerUpdate();
+<<<<<<< HEAD
         toast.success(<div>🗑️ Accommodation Removed.</div>);
+=======
+        toast.success(
+          <div>
+              🗑️ Accommodation Removed.
+          </div>
+        )
+>>>>>>> main
       }
     } catch (error) {
       console.error(error.message);

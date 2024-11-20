@@ -143,7 +143,9 @@ const TripCardDisplay = (props) => {
                     imagestray[4].url) ||
                   (trip.itineraries[0]?.arrPort === "IST" &&
                     imagestray[3].url) ||
-                  (trip.itineraries[0]?.arrPort === "CAI" && imagestray[2].url)
+                  (trip.itineraries[0]?.arrPort === "CAI" &&
+                    imagestray[2].url) ||
+                  "https://cdn.midjourney.com/611ba752-f809-4bbb-af71-a0524fc92ba1/0_2.png"
                 : "https://cdn.midjourney.com/611ba752-f809-4bbb-af71-a0524fc92ba1/0_2.png"
             }
             flighttix={trip.itineraries.length}

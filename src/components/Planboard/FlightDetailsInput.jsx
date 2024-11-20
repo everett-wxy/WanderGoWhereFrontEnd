@@ -118,6 +118,7 @@ const FlightDetailsInput = (props) => {
       setArrivalFlightData(arrivalFlightData);
       setIsLoading(false);
       if (props.onComplete) {
+        console.log("onComplete triggered");
         props.onComplete();
       }
     } catch (error) {

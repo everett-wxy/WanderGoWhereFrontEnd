@@ -189,7 +189,6 @@ const ActivityContainer = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       await getTripData();
-      console.log("tripdestination: ", tripDestination);
       if (tripDestination) {
         await getActivitiesData(tripDestination);
         await getTripActivitiesData(); //grab the options from this city.
@@ -202,7 +201,6 @@ const ActivityContainer = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Updated trip destination:", tripDestination);
       if (tripDestination) {
         await getActivitiesData(tripDestination);
         await getTripActivitiesData();

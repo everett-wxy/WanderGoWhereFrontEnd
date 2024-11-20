@@ -11,7 +11,32 @@ const AccomContainer = (props) => {
   const [accomsData, setAccomsData] = useState([]);
   const [tripAccomsIdData, setTripAccomsIdData] = useState(""); //for showing Accoms ID . and toggling
   const [selectedAccomsData, setSelectedAccomsData] = useState([]);
+  const [tripDestination, setTripDestination] = useState("");
   const { id } = useParams();
+
+  const getTripData = async () => {
+    ///grab saved destination here.
+    try {
+      const res = await fetch(
+        import.meta.env.VITE_SERVER + "/WanderGoWhere/onetrip/" + id,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            authorization: "Bearer " + accessToken,
+          },
+        }
+      );
+      if (!res.ok) {
+        throw new Error("data error");
+      } else {
+        const data = await res.json();
+        setTripDestination(data.itineraries[0]?.arrPort);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   //GET AccomsData to map out choices.
   const getAccomsData = async (destinationInput) => {
@@ -152,6 +177,10 @@ const AccomContainer = (props) => {
     delAccomsFromTrip(accomId);
     setTripAccomsIdData("");
     setSelectedAccomsData([]);
+    getTripData();
+    if (tripDestination) {
+      getAccomsData(tripDestination);
+    }
   };
 
   const getPopulatedAccomsData = async (accomId) => {
@@ -182,28 +211,17 @@ const AccomContainer = (props) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      console.log("destinationInput:", destinationInput);
-      if (destinationInput) {
-        await getAccomsData(destinationInput);
-      }
-      await getTripAccomsIdData();
-    };
-    fetchData();
-  }, [destinationInput]);
-
-  useEffect(() => {
     if (destinationInput) {
       getAccomsData(destinationInput);
     }
   }, [destinationInput]);
 
   useEffect(() => {
-    getTripAccomsIdData();
-    if (tripAccomsIdData) {
-      getPopulatedAccomsData(tripAccomsIdData);
+    getTripData();
+    if (tripDestination) {
+      getAccomsData(tripDestination);
     }
-  }, [tripAccomsIdData]);
+  }, [tripDestination]);
 
   return (
     <div className={styles.flightcontainer}>

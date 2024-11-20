@@ -22,7 +22,7 @@ const Dashboard = () => {
           handleGo={handleGoFunction}
         />
       )}
-      <div className={styles.dashboard}>
+      <div className={styles.dashboard} style={{ marginBottom: "250px" }}>
         <Greeting
           username={username}
           fontstyle={{

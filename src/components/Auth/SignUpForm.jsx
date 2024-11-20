@@ -153,6 +153,8 @@ const OverLay = (props) => {
             <p style={{ color: "red" }}>Unavailable</p>
           ) : emailValidation === "Spaces" ? (
             <p style={{ color: "red" }}>Spaces not allowed</p>
+          ) : emailValidation === "Invalid Email" ? (
+            <p style={{ color: "red" }}>Invalid</p>
           ) : (
             <p></p>
           )}

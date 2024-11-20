@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Accomboard.module.css";
 
 const RestaurantCard = (props) => {
+  const [hovered, setHovered] = useState(false);
+
   return (
-    <div className={styles.flightcard}>
+    <div
+      className={styles.flightcard}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <div className={styles.imgwrapper}>
         <img
           className={styles.hotelimg}
           src={props.restaurantImg}
           alt={props.restaurant}
         />
+        <div
+          className={`${styles.details} ${hovered ? styles.showDetails : ""}`}
+        >
+          <p>{props.details}</p>
+        </div>
       </div>
 
       <div

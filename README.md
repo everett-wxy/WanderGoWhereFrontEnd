@@ -218,4 +218,4 @@ Next steps: Planned future enhancements (stretch goals).
 - make the budget bar stay visible even when scrolling
 - have the function to exclude showing activities and/or restaurants that may exceed the budget
 - have the ability to share the planned trips with others
-- have a more refine options to search for countries/states.
+- have a more refine option to search for countries/states.

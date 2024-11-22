@@ -16,8 +16,6 @@ Wander Go Where is the result of a passionate collaboration between:
 
 Join us on this journey and let us help you plan the trip of a lifetime—without the stress!
 
-This app was created using MERN stack (MongoDB, Express.js, React, Node.JS)
-
 ```
 "We travel not to escape life, but for life not to escape us.” — Anonymous
 ```

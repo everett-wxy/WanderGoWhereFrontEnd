@@ -42,37 +42,37 @@ Firstly, create a folder titled _WanderGoWhere_. This folder will hold our colle
 
 Create a collection titled _Hotels_, which have the following structure:-
 
-![hotels collection](readmeSS\hotels_collection.png)
+![hotels collection](/readmeSS/hotels_collection.png)
 
 #### Activities
 
 Create a collection titled _Activities_, which have the following structure:-
 
-![activities collection](readmeSS\activities_collection.png)
+![activities collection](/readmeSS/activities_collection.png)
 
 #### Restaurants
 
 Create a collection titled _Restaurants_, which have the following structure:-
 
-![restaurants collection](readmeSS\restaurants_collection.png)
+![restaurants collection](/readmeSS/restaurants_collection.png)
 
 #### auth
 
 Create a collection titled _auth_, which have the following structure:-
 
-![auth collection](readmeSS\auth_collection.png)
+![auth collection](/readmeSS/auth_collection.png)
 
 #### roles
 
 Create a collection titled _roles_, which have the following structure:-
 
-![role collection](readmeSS\role_collection.png)
+![role collection](/readmeSS/role_collection.png)
 
 #### trips
 
 Create a collection titled _trips_, which have the following structure:-
 
-![trips collection](readmeSS\trips_collection.png)
+![trips collection](/readmeSS/trips_collection.png)
 
 ##
 
